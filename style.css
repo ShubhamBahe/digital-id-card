@@ -262,3 +262,110 @@ h1 {
 .smile-box h2 {
     filter: drop-shadow(0 0 6px #65d5ff66);
 }
+
+
+
+body {
+    background: #f1f5fb;
+    color: #17243b;
+}
+
+.card {
+    background: linear-gradient(145deg, #ffffff, #f7faff);
+    border: 1px solid #dce6f3;
+    box-shadow: 0 12px 35px rgba(42, 70, 110, 0.12);
+}
+
+.top p {
+    color: #71819a;
+}
+
+h1 {
+    color: #17243b;
+}
+
+.role {
+    color: #2878df;
+}
+
+.bio {
+    color: #64748b;
+}
+
+.line {
+    background: #dce6f3;
+}
+
+/* Social icons */
+.social-link {
+    background: #ffffff;
+    border-color: #d8e3f1;
+    box-shadow: 0 3px 10px rgba(42, 70, 110, 0.08);
+}
+
+.github {
+    color: #17243b;
+}
+
+.social-link:hover {
+    border-color: #65bfff;
+    box-shadow: 0 0 12px #3b82f644;
+}
+
+/* Action buttons */
+.save-btn {
+    background: #2878df;
+    color: #ffffff;
+}
+
+.share-btn {
+    background: #ffffff;
+    color: #2878df;
+    border-color: #cbdcf2;
+}
+
+/* About Me box */
+.about-me {
+    background: #f8fbff;
+    border-color: #dce6f3;
+}
+
+.about-me h3 {
+    color: #2878df;
+}
+
+.about-me p {
+    color: #64748b;
+}
+
+/* Experience, Clients and QR boxes */
+.info-box {
+    background: linear-gradient(145deg, #ffffff, #f1f6ff);
+    border-color: #dce6f3;
+}
+
+.info-number {
+    color: #17243b;
+}
+
+.info-label {
+    color: #71819a;
+}
+
+.info-box:hover {
+    border-color: #65bfff;
+    box-shadow: 0 5px 18px #2878df22;
+}
+
+/* Footer */
+footer {
+    border-color: #dce6f3;
+    color: #71819a;
+}
+
+/* Smaller mobile screens */
+@media (max-width: 360px) {
+    .card {
+        background: #ffffff;
+    }
+}
