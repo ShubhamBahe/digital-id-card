@@ -113,8 +113,8 @@ h1 {
     color: #ff70a6;
 }
 
-.github {
-    color: #ffffff;
+.facebook {
+    color: #1877f2;
 }
 
 .linkedin {
@@ -163,10 +163,23 @@ h1 {
     border: 1px solid #3b82f6;
 }
 
-.share-btn {
-    color: #65d5ff;
-    background: #101d35;
-    border: 1px solid #345782;
+.location-btn {
+    background: #ffffff;
+    color: #2878df;
+    border: 1px solid #cbdcf2;
+}
+
+.location-status {
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.6;
+    margin: 8px 0;
+    overflow-wrap: anywhere;
+}
+
+.location-status a {
+    color: #2878df;
+    font-weight: bold;
 }
 
 .action-btn:hover {
@@ -262,7 +275,6 @@ h1 {
 .smile-box h2 {
     filter: drop-shadow(0 0 6px #65d5ff66);
 }
-
 
 
 body {
