@@ -69,7 +69,7 @@ function getLocation() {
 
 
 // WhatsApp Contact Details
-const whatsappNumber = "9198329056457";
+const whatsappNumber = "98329056457";
 
 const whatsappMessage =
     "Hello! 👋 I'm interested in your travel packages. Please share the available holiday packages and pricing. ✈️🌍";
