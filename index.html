@@ -46,13 +46,13 @@
         </a>
 
         <a
-          href="https://github.com/"
-          class="social-link github"
+          href="https://www.facebook.com/YOUR-PROFILE"
+          class="social-link facebook"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="GitHub"
+          aria-label="Facebook"
         >
-          <i class="fa-brands fa-github"></i>
+          <i class="fa-brands fa-facebook-f"></i>
         </a>
 
         <a
@@ -66,7 +66,7 @@
         </a>
 
         <a
-          href="https://wa.me/"
+          href="https://wa.me/9834748891?text=Hi%2C%20I%20found%20your%20Digital%20ID%20profile."
           class="social-link whatsapp"
           target="_blank"
           rel="noopener noreferrer"
@@ -83,12 +83,18 @@
           Call Now
         </a>
 
-        <button class="action-btn share-btn" onclick="shareProfile()">
-          <i class="fa-solid fa-share-nodes"></i>
-          Share Profile
+        <button
+          type="button"
+          class="action-btn location-btn"
+          onclick="getLocation()"
+        >
+          <i class="fa-solid fa-location-dot"></i>
+          Get Location
         </button>
       </div>
 
+      <!-- Location Status -->
+      <p id="locationStatus" class="location-status" aria-live="polite"></p>
       <!-- About Me -->
       <div class="about-me">
         <h3>About Me</h3>
