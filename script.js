@@ -106,3 +106,12 @@ function getLocation() {
     );
 }
 
+// WhatsApp contact details
+const whatsappNumber = "919876543210";
+
+const whatsappMessage =
+    "Hello sir! I would like to know more about your services.";
+
+// Create WhatsApp link automatically
+document.getElementById("whatsappLink").href =
+    `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
