@@ -88,12 +88,12 @@ h1 {
 
 .role {
     color: #65d5ff;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .bio {
     color: #a5b2c9;
-    font-size: 20px;
+    font-size: 15px;
     line-height: 1.6;
     margin: 15px 0;
 }
@@ -247,7 +247,7 @@ h1 {
 
 .about-me p {
     color: #a5b2c9;
-    font-size: 20px !important ;
+    font-size: 15px ;
     line-height: 1.6;
 }
 
@@ -317,7 +317,7 @@ h1 {
 
 .role {
     color: #2878df;
-    font-size: 20px;
+    font-size: 17px;
 }
 
 .bio {
