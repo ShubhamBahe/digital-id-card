@@ -1,5 +1,5 @@
 
-const userName = "Life of Chai";
+const userName = "Uravi Holidays";
 
 // Generate initials automatically
 const nameParts = userName.trim().split(/\s+/).filter(Boolean);
@@ -21,6 +21,11 @@ function generateQR() {
     const qrImage = document.getElementById("qrImage");
     const qrDisplay = document.getElementById("qrDisplay");
 
+    if (!qrImage || !qrDisplay) {
+        console.error("QR code elements not found in HTML.");
+        return;
+    }
+
     qrImage.src =
         "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" +
         encodeURIComponent(profileURL);
@@ -32,8 +37,8 @@ function generateQR() {
 // Share Profile
 async function shareProfile() {
     const profile = {
-        title: "My Digital ID",
-        text: "Check out my digital profile!",
+        title: "Uravi Holidays - Digital ID",
+        text: "Check out Uravi Holidays! Explore our holiday packages.",
         url: window.location.href
     };
 
@@ -54,64 +59,26 @@ async function shareProfile() {
 }
 
 
+// Open Uravi Holidays Location
 function getLocation() {
-    const status = document.getElementById("locationStatus");
+    const mapURL = "https://maps.app.goo.gl/xikMJF9QvYEE35hi8";
 
-    if (!navigator.geolocation) {
-        status.textContent =
-            "Location is not supported by this browser.";
-        return;
-    }
-
-    status.textContent = "Requesting location permission...";
-
-    navigator.geolocation.getCurrentPosition(
-        function (position) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-
-            const mapURL =
-                `https://www.google.com/maps?q=${latitude},${longitude}`;
-
-            const mapLink = document.createElement("a");
-            mapLink.href = mapURL;
-            mapLink.target = "_blank";
-            mapLink.rel = "noopener noreferrer";
-            mapLink.textContent = "Open in Google Maps";
-
-            status.replaceChildren(
-                document.createTextNode("Location found: "),
-                mapLink
-            );
-        },
-
-        function (error) {
-            if (error.code === error.PERMISSION_DENIED) {
-                status.textContent =
-                    "Location permission denied. Please allow location access.";
-            } else if (error.code === error.TIMEOUT) {
-                status.textContent =
-                    "Location request timed out. Please try again.";
-            } else {
-                status.textContent =
-                    "Unable to get your location. Please try again.";
-            }
-        },
-
-        {
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 60000
-        }
-    );
+    // Open Google Maps directly
+    window.open(mapURL, "_blank");
 }
 
-// WhatsApp contact details
-const whatsappNumber = "919834748891";
+
+// WhatsApp Contact Details
+const whatsappNumber = "9198329056457";
 
 const whatsappMessage =
-    "Hello sir! I would like to know more about your services.";
+    "Hello! 👋 I'm interested in your travel packages. Please share the available holiday packages and pricing. ✈️🌍";
 
-// Create WhatsApp link automatically
-document.getElementById("whatsappLink").href =
-    `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+
+// Create WhatsApp Link Automatically
+const whatsappLink = document.getElementById("whatsappLink");
+
+if (whatsappLink) {
+    whatsappLink.href =
+        `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+}
