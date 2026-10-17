@@ -1,5 +1,5 @@
 
-const userName = "user name";
+const userName = "Life of Chai";
 
 // Generate initials automatically
 const nameParts = userName.trim().split(/\s+/).filter(Boolean);
@@ -52,3 +52,57 @@ async function shareProfile() {
         }
     }
 }
+
+
+function getLocation() {
+    const status = document.getElementById("locationStatus");
+
+    if (!navigator.geolocation) {
+        status.textContent =
+            "Location is not supported by this browser.";
+        return;
+    }
+
+    status.textContent = "Requesting location permission...";
+
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            const mapURL =
+                `https://www.google.com/maps?q=${latitude},${longitude}`;
+
+            const mapLink = document.createElement("a");
+            mapLink.href = mapURL;
+            mapLink.target = "_blank";
+            mapLink.rel = "noopener noreferrer";
+            mapLink.textContent = "Open in Google Maps";
+
+            status.replaceChildren(
+                document.createTextNode("Location found: "),
+                mapLink
+            );
+        },
+
+        function (error) {
+            if (error.code === error.PERMISSION_DENIED) {
+                status.textContent =
+                    "Location permission denied. Please allow location access.";
+            } else if (error.code === error.TIMEOUT) {
+                status.textContent =
+                    "Location request timed out. Please try again.";
+            } else {
+                status.textContent =
+                    "Unable to get your location. Please try again.";
+            }
+        },
+
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 60000
+        }
+    );
+}
+
