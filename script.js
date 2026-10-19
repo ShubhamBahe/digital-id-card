@@ -1,4 +1,3 @@
-
 console.log("Uravi Holidays script loaded");
 
 // ================= PROFILE DETAILS =================
@@ -18,9 +17,11 @@ if (profileName) {
 
 
 // ================= GOOGLE MAPS LOCATION =================
+const MAP_URL = "https://maps.app.goo.gl/xikMJF9QvYEE35hi8";
+const CALL_NUMBER = "+918766043591";
+
 function getLocation() {
-    const mapURL = "https://maps.app.goo.gl/xikMJF9QvYEE35hi8";
-    window.open(mapURL, "_blank", "noopener,noreferrer");
+    window.open(MAP_URL, "_blank", "noopener,noreferrer");
 }
 
 
@@ -352,4 +353,188 @@ if (whatsappLink) {
     updateStars(0);
 
     console.log("Feedback system initialized successfully");
+})();
+
+
+// ================= SAVE & SHARE TOOLS =================
+(function () {
+    "use strict";
+
+    var tools = document.getElementById("tools");
+    var modal = document.getElementById("qmodal");
+    var modalTitle = document.getElementById("qmodalTitle");
+    var modalBody = document.getElementById("qmodalBody");
+    var modalClose = document.getElementById("qmodalClose");
+    var toastEl = document.getElementById("qtoast");
+    if (!tools || !modal) return;
+
+    function pageUrl() { return location.href.split("#")[0]; }
+
+    function toast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.add("is-show");
+        clearTimeout(toast.t);
+        toast.t = setTimeout(function () { toastEl.classList.remove("is-show"); }, 2200);
+    }
+
+    function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+            return navigator.clipboard.writeText(text);
+        }
+        return new Promise(function (resolve, reject) {
+            var ta = document.createElement("textarea");
+            ta.value = text;
+            ta.style.position = "fixed";
+            ta.style.opacity = "0";
+            document.body.appendChild(ta);
+            ta.select();
+            var ok = false;
+            try { ok = document.execCommand("copy"); } catch (e) {}
+            document.body.removeChild(ta);
+            ok ? resolve() : reject();
+        });
+    }
+
+    // ---------- popup (used by QR code) ----------
+    function openModal(title, html) {
+        modalTitle.textContent = title;
+        modalBody.innerHTML = html;
+        modal.hidden = false;
+        document.body.style.overflow = "hidden";
+        modalClose.focus({ preventScroll: true });
+    }
+    function closeModal() {
+        modal.hidden = true;
+        document.body.style.overflow = "";
+    }
+    modalClose.addEventListener("click", closeModal);
+    modal.addEventListener("click", function (e) { if (e.target === modal) closeModal(); });
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && !modal.hidden) closeModal();
+    });
+
+    // ---------- actions ----------
+    function share() {
+        var data = {
+            title: userName,
+            text: "Check out " + userName + " – your trusted travel partner",
+            url: pageUrl()
+        };
+        if (navigator.share) {
+            navigator.share(data).catch(function () {});
+        } else {
+            copyLink();
+        }
+    }
+
+    function copyLink() {
+        copyText(pageUrl()).then(
+            function () { toast("Link copied"); },
+            function () { toast("Copy failed"); }
+        );
+    }
+
+    function saveContact() {
+        var lines = [
+            "BEGIN:VCARD", "VERSION:3.0",
+            "N:;" + userName + ";;;", "FN:" + userName,
+            "ORG:" + userName, "TITLE:Your Trusted Travel Partner",
+            "TEL;TYPE=WORK,VOICE:" + CALL_NUMBER,
+            "URL:" + MAP_URL
+        ];
+        if (/^https?:/.test(pageUrl())) lines.push("URL:" + pageUrl());
+        lines.push("END:VCARD");
+
+        var blob = new Blob([lines.join("\r\n")], { type: "text/vcard;charset=utf-8" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "Uravi-Holidays.vcf";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+        toast("Contact file downloaded");
+    }
+
+    function showQr() {
+        var src = "https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=" +
+            encodeURIComponent(pageUrl());
+        openModal(
+            "Scan QR code",
+            '<div class="qmodal__center">' +
+                '<img src="' + src + '" alt="QR code for this card" width="240" height="240">' +
+                "<p>Scan to open this digital card on another phone.</p>" +
+                '<a class="qbtn" href="' + src + '" download="uravi-holidays-qr.png" target="_blank" rel="noopener">Download QR</a>' +
+            "</div>"
+        );
+    }
+
+    var actions = { save: saveContact, share: share, copy: copyLink, qr: showQr };
+
+    tools.addEventListener("click", function (e) {
+        var btn = e.target.closest("[data-action]");
+        if (!btn) return;
+        var run = actions[btn.getAttribute("data-action")];
+        if (run) run();
+    });
+})();
+
+
+// ================= SCROLL EFFECTS =================
+(function () {
+    "use strict";
+
+    var bar = document.getElementById("scrollProgress");
+    var toTop = document.getElementById("toTop");
+    var root = document.documentElement;
+    var reduceMotion = window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var ticking = false;
+
+    // progress bar + back-to-top button
+    function update() {
+        var max = root.scrollHeight - root.clientHeight;
+        var top = window.pageYOffset || root.scrollTop || 0;
+        if (bar) bar.style.transform = "scaleX(" + (max > 0 ? Math.min(top / max, 1) : 0) + ")";
+        if (toTop) toTop.classList.toggle("is-show", top > 480);
+        ticking = false;
+    }
+    function onScroll() {
+        if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+        }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+
+    if (toTop) {
+        toTop.addEventListener("click", function () {
+            window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+        });
+    }
+
+    // reveal sections as they scroll into view
+    var items = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window && !reduceMotion) {
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("is-in");
+                    io.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -6% 0px" });
+        items.forEach(function (el) { io.observe(el); });
+    } else {
+        items.forEach(function (el) { el.classList.add("is-in"); });
+    }
+
+    // keep the paper plane still (mid-flight) when motion is reduced
+    var art = document.getElementById("heroArt");
+    if (reduceMotion && art && art.pauseAnimations) {
+        art.pauseAnimations();
+        art.setCurrentTime(3.5);
+    }
 })();
