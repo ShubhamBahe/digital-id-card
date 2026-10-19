@@ -1,4 +1,5 @@
 
+/* ================= GENERAL RESET ================= */
 * {
     margin: 0;
     padding: 0;
@@ -8,25 +9,30 @@
 body {
     min-height: 100vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
-    padding: 20px;
-    background: #080f20;
+    gap: 22px;
+    padding: 28px 14px;
+    background: #f1f5fb;
     font-family: Arial, sans-serif;
-    color: white;
+    color: #17243b;
 }
 
+/* ================= MAIN DIGITAL ID CARD ================= */
 .card {
     width: 100%;
     max-width: 350px;
+    margin: 0 auto;
     padding: 25px;
     text-align: center;
     border-radius: 20px;
-    background: linear-gradient(145deg, #142746, #0b1325);
-    border: 1px solid #294466;
-    box-shadow: 0 10px 35px #0005;
+    background: linear-gradient(145deg, #ffffff, #f7faff);
+    border: 1px solid #dce6f3;
+    box-shadow: 0 12px 35px rgba(42, 70, 110, 0.12);
 }
 
+/* ================= TOP BRAND SECTION ================= */
 .top {
     display: flex;
     justify-content: space-between;
@@ -34,21 +40,30 @@ body {
     margin-bottom: 28px;
 }
 
-.top h3 {
-    font-size: 25px;
-    color: #65d5ff;
+.brand-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #65bfff;
+    flex-shrink: 0;
 }
 
-.top h3 span {
-    color: #3b82f6;
+.brand-logo img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .top p {
     font-size: 10px;
     letter-spacing: 2px;
-    color: #a5b2c9;
+    color: #71819a;
 }
 
+/* ================= PROFILE IMAGE ================= */
 .profile {
     width: 85px;
     height: 85px;
@@ -56,16 +71,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #3b82f6, #65d5ff);
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.profile {
-    width: 85px;
-    height: 85px;
-    margin: 0 auto 15px;
     border-radius: 50%;
     overflow: hidden;
     padding: 0;
@@ -81,18 +86,21 @@ body {
     border-radius: 50%;
 }
 
+/* ================= PROFILE DETAILS ================= */
 h1 {
+    color: #17243b;
     font-size: 25px;
     margin-bottom: 6px;
+    overflow-wrap: anywhere;
 }
 
 .role {
-    color: #65d5ff;
-    font-size: 12px;
+    color: #2878df;
+    font-size: 17px;
 }
 
 .bio {
-    color: #a5b2c9;
+    color: #64748b;
     font-size: 15px;
     line-height: 1.6;
     margin: 15px 0;
@@ -100,15 +108,16 @@ h1 {
 
 .line {
     height: 1px;
-    background: #294466;
+    background: #dce6f3;
     margin: 20px 0;
 }
 
-/* Circular Social Icons */
+/* ================= SOCIAL MEDIA ICONS ================= */
 .social-icons {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
     gap: 18px;
     margin: 25px 0;
 }
@@ -121,8 +130,9 @@ h1 {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    background: #101d35;
-    border: 1px solid #345782;
+    background: #ffffff;
+    border: 1px solid #d8e3f1;
+    box-shadow: 0 3px 10px rgba(42, 70, 110, 0.08);
     text-decoration: none;
     font-size: 23px;
     transition: 0.3s ease;
@@ -144,14 +154,17 @@ h1 {
     color: #25d366;
 }
 
-.social-link:hover {
-    transform: translateY(-5px);
-    border-color: #65d5ff;
-    box-shadow: 0 0 12px #3b82f6,
-                0 0 25px #3b82f655;
+.github {
+    color: #17243b;
 }
 
-/* Rectangular Action Buttons */
+.social-link:hover {
+    transform: translateY(-5px);
+    border-color: #65bfff;
+    box-shadow: 0 0 12px #3b82f644;
+}
+
+/* ================= ACTION BUTTONS ================= */
 .action-buttons {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -177,8 +190,8 @@ h1 {
 }
 
 .save-btn {
-    color: white;
-    background: #2563eb;
+    color: #ffffff;
+    background: #2878df;
     border: 1px solid #3b82f6;
 }
 
@@ -188,17 +201,17 @@ h1 {
     border: 1px solid #cbdcf2;
 }
 
-.location-status {
-    color: #64748b;
-    font-size: 11px;
-    line-height: 1.6;
-    margin: 8px 0;
-    overflow-wrap: anywhere;
+.share-btn {
+    background: #ffffff;
+    color: #2878df;
+    border: 1px solid #cbdcf2;
 }
 
-.location-status a {
+.feedback-jump {
+    grid-column: 1 / -1;
     color: #2878df;
-    font-weight: bold;
+    background: #eaf3ff;
+    border: 1px solid #cbdcf2;
 }
 
 .action-btn:hover {
@@ -206,7 +219,439 @@ h1 {
     box-shadow: 0 0 15px #3b82f644;
 }
 
-/* Small Mobile Screens */
+/* ================= LOCATION STATUS ================= */
+#locationStatus {
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.6;
+    margin: 8px 0;
+    overflow-wrap: anywhere;
+}
+
+#locationStatus a {
+    color: #2878df;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#locationStatus a:hover {
+    text-decoration: underline;
+}
+
+/* ================= ABOUT ME SECTION ================= */
+.about-me {
+    text-align: left;
+    padding: 15px;
+    margin: 20px 0;
+    background: #f8fbff;
+    border: 1px solid #dce6f3;
+    border-radius: 12px;
+}
+
+.about-me h3 {
+    color: #2878df;
+    font-size: 25px;
+    margin-bottom: 8px;
+}
+
+.about-me p {
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+/* ================= THREE INFORMATION BOXES ================= */
+.info-boxes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin: 20px 0;
+}
+
+.info-box {
+    min-width: 0;
+    padding: 13px 4px;
+    background: linear-gradient(145deg, #ffffff, #f1f6ff);
+    border: 1px solid #dce6f3;
+    border-radius: 12px;
+    transition: 0.3s ease;
+}
+
+.info-box:hover {
+    border-color: #65bfff;
+    box-shadow: 0 5px 18px #2878df22;
+    transform: translateY(-3px);
+}
+
+.info-box h2 {
+    font-size: 23px;
+    margin-bottom: 8px;
+}
+
+.info-number {
+    color: #17243b;
+    font-size: 11px;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+}
+
+.info-label {
+    color: #71819a;
+    font-size: 10px;
+    margin-top: 4px;
+}
+
+.smile-box h2 {
+    filter: drop-shadow(0 0 6px #65d5ff66);
+}
+
+/* ================= FEEDBACK SECTION ================= */
+.feedback-section {
+    width: 100%;
+    max-width: 520px;
+    margin: 25px auto 0;
+    padding: 26px;
+    border: 1px solid #dce6f3;
+    border-radius: 22px;
+    background: linear-gradient(145deg, #ffffff, #f7faff);
+    box-shadow: 0 12px 35px rgba(42, 70, 110, 0.12);
+    color: #17243b;
+}
+
+.feedback-heading {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.feedback-eyebrow {
+    display: inline-block;
+    color: #2878df;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    margin-bottom: 8px;
+}
+
+.feedback-heading h2 {
+    font-size: 25px;
+    margin-bottom: 8px;
+    color: #17243b;
+}
+
+.feedback-heading p {
+    color: #71819a;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* ================= RATING STARS ================= */
+.rating-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #273a56;
+    margin-bottom: 10px;
+}
+
+.star-rating {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 5px 0;
+}
+
+.star {
+    border: 0;
+    background: transparent;
+    color: #d5deeb;
+    font-size: 38px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 2px;
+    transition: transform 0.15s, color 0.15s;
+}
+
+.star:hover {
+    transform: scale(1.12);
+}
+
+.star.active {
+    color: #ffb020;
+}
+
+.rating-hint {
+    text-align: center;
+    font-size: 12px;
+    color: #71819a;
+    margin: 7px 0 22px;
+}
+
+/* ================= SUGGESTION GROUPS ================= */
+.suggestion-group {
+    margin: 20px 0;
+}
+
+/* Keep suggestion chips horizontal */
+.suggestion-chips {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+/* Each suggestion stays in one horizontal line */
+.suggestion-chip {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    max-width: 100%;
+    margin: 0;
+    cursor: pointer;
+}
+
+/* Hide native checkboxes while keeping them functional */
+.suggestion-chip input[type="checkbox"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+}
+
+/* Suggestion chip appearance */
+.suggestion-chip span {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    padding: 8px 11px;
+    white-space: nowrap;
+    border: 1px solid #dce6f3;
+    border-radius: 999px;
+    background: #f8fbff;
+    color: #40516b;
+    font-size: 12px;
+    transition: 0.2s ease;
+}
+
+/* Selected suggestion */
+.suggestion-chip input:checked + span {
+    border-color: #2878df;
+    background: #eaf3ff;
+    color: #1761bd;
+    box-shadow: 0 0 0 2px #2878df12;
+}
+
+/* Keyboard accessibility */
+.suggestion-chip:focus-within span {
+    outline: 2px solid #80b7ff;
+    outline-offset: 2px;
+}
+
+/* Optional label */
+.optional {
+    color: #8795a9;
+    font-size: 11px;
+    font-weight: 400;
+}
+
+/* ================= REVIEW INPUTS ================= */
+.review-label {
+    display: block;
+    margin: 15px 0 8px;
+    color: #273a56;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.feedback-section textarea,
+.feedback-section input[type="text"] {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    border: 1px solid #dce6f3;
+    border-radius: 12px;
+    padding: 12px 13px;
+    font-family: inherit;
+    font-size: 13px;
+    color: #17243b;
+    background: #fbfdff;
+    outline: none;
+}
+
+.feedback-section textarea {
+    resize: vertical;
+    min-height: 105px;
+    line-height: 1.55;
+}
+
+.feedback-section textarea:focus,
+.feedback-section input[type="text"]:focus {
+    border-color: #2878df;
+    box-shadow: 0 0 0 3px #2878df18;
+}
+
+/* ================= SUBMIT FEEDBACK BUTTON ================= */
+.submit-review {
+    width: 100%;
+    margin-top: 18px;
+    border: 0;
+    border-radius: 12px;
+    padding: 13px 16px;
+    color: #ffffff;
+    background: linear-gradient(100deg, #2878df, #4b9cff);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 7px 18px #2878df30;
+    transition: 0.2s ease;
+}
+
+.submit-review:hover {
+    filter: brightness(1.04);
+    transform: translateY(-1px);
+}
+
+/* ================= FEEDBACK STATUS ================= */
+.feedback-status {
+    min-height: 18px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #16734a;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+/* ================= RECENT FEEDBACK ================= */
+.recent-feedback {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid #e1e9f4;
+}
+
+.recent-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.recent-heading h3 {
+    font-size: 17px;
+    color: #17243b;
+}
+
+.local-note {
+    color: #8795a9;
+    font-size: 10px;
+    text-align: right;
+}
+
+.review-list {
+    display: grid;
+    gap: 10px;
+}
+
+.empty-reviews {
+    font-size: 12px;
+    color: #8795a9;
+    text-align: center;
+    padding: 16px 5px;
+}
+
+/* Individual review card */
+.review-card {
+    border: 1px solid #e0e9f5;
+    border-radius: 13px;
+    padding: 13px;
+    background: #ffffff;
+}
+
+.review-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 7px;
+}
+
+.review-author {
+    color: #273a56;
+    font-size: 12px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.review-stars {
+    color: #ffb020;
+    letter-spacing: 1px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.review-date {
+    color: #8795a9;
+    font-size: 10px;
+    margin-top: 8px;
+}
+
+.review-copy {
+    color: #52627a;
+    font-size: 12px;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+}
+
+/* ================= FOOTER ================= */
+footer {
+    border-color: #dce6f3;
+    color: #71819a;
+}
+
+/* ================= TABLETS AND MOBILE ================= */
+@media (max-width: 480px) {
+    body {
+        padding: 16px 10px;
+        gap: 16px;
+    }
+
+    .feedback-section {
+        padding: 21px 16px;
+        border-radius: 18px;
+    }
+
+    .feedback-heading h2 {
+        font-size: 22px;
+    }
+
+    .suggestion-chips {
+        gap: 8px;
+    }
+
+    .suggestion-chip span {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    .star {
+        font-size: 35px;
+    }
+
+    .recent-heading {
+        align-items: flex-start;
+    }
+}
+
+/* ================= SMALL MOBILE SCREENS ================= */
 @media (max-width: 360px) {
     .card {
         padding: 20px 16px;
@@ -225,181 +670,119 @@ h1 {
     .action-btn {
         font-size: 11px;
     }
+
+    .feedback-section {
+        padding: 18px 12px;
+    }
+
+    .suggestion-chips {
+        gap: 6px;
+    }
+
+    .suggestion-chip span {
+        padding: 7px 8px;
+        font-size: 11px;
+    }
+
+    .info-boxes {
+        gap: 5px;
+    }
 }
 
 
 
-/* About Me Box */
-.about-me {
-    text-align: left;
-    padding: 15px;
-    margin: 20px 0;
-    background: #0c192d;
-    border: 1px solid #294466;
-    border-radius: 12px;
-}
-
-.about-me h3 {
-    color: #65d5ff;
-    font-size: 25px;
-    margin-bottom: 8px;
-}
-
-.about-me p {
-    color: #a5b2c9;
-    font-size: 15px ;
-    line-height: 1.6;
-}
-
-/* Three Info Boxes */
-.info-boxes {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+/* Horizontal suggestion chips without a scrollbar */
+.suggestion-group .suggestion-chips {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
     gap: 8px;
-    margin: 20px 0;
+    width: 100%;
+    overflow: visible;
 }
 
-.info-box {
-    padding: 13px 4px;
-    background: linear-gradient(145deg, #172b49, #0d192d);
-    border: 1px solid #294466;
-    border-radius: 12px;
-    transition: 0.3s ease;
+.suggestion-group .suggestion-chip {
+    display: inline-flex;
+    flex: 0 1 auto;
+    width: auto;
+    margin: 0;
 }
 
-.info-box:hover {
-    border-color: #65d5ff;
-    box-shadow: 0 0 12px #3b82f633;
-    transform: translateY(-3px);
+.suggestion-group .suggestion-chip span {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
 }
 
-.info-box h2 {
-    font-size: 23px;
-    margin-bottom: 8px;
+
+
+/* Arrange feedback suggestions in horizontal pairs */
+.suggestion-group .suggestion-chips {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    justify-content: start;
+    align-items: center;
+    gap: 8px 12px;
+    width: 100%;
+    overflow: visible;
 }
 
-.info-number {
-    color: #ffffff;
-    font-size: 11px;
-    font-weight: bold;
+.suggestion-group .suggestion-chip {
+    display: inline-flex;
+    width: auto;
+    margin: 0;
+}
+
+.suggestion-group .suggestion-chip span {
+    white-space: nowrap;
+}
+
+
+
+/* Fit suggestion chips inside the feedback section */
+.suggestion-group .suggestion-chips {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: start;
+    align-items: start;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Keep each chip inside its column */
+.suggestion-group .suggestion-chip {
+    display: flex;
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+}
+
+/* Make chip text fit without overflowing */
+.suggestion-group .suggestion-chip span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
     overflow-wrap: anywhere;
+    padding: 8px;
+    font-size: 11px;
+    line-height: 1.4;
+    border-radius: 999px;
 }
 
-.info-label {
-    color: #8fa6c7;
-    font-size: 10px;
-    margin-top: 4px;
-}
-
-.smile-box h2 {
-    filter: drop-shadow(0 0 6px #65d5ff66);
-}
-
-
-body {
-    background: #f1f5fb;
-    color: #17243b;
-}
-
-.card {
-    background: linear-gradient(145deg, #ffffff, #f7faff);
-    border: 1px solid #dce6f3;
-    box-shadow: 0 12px 35px rgba(42, 70, 110, 0.12);
-}
-
-.top p {
-    color: #71819a;
-}
-
-h1 {
-    color: #17243b;
-}
-
-.role {
-    color: #2878df;
-    font-size: 17px;
-}
-
-.bio {
-    color: #64748b;
-}
-
-.line {
-    background: #dce6f3;
-}
-
-/* Social icons */
-.social-link {
-    background: #ffffff;
-    border-color: #d8e3f1;
-    box-shadow: 0 3px 10px rgba(42, 70, 110, 0.08);
-}
-
-.github {
-    color: #17243b;
-}
-
-.social-link:hover {
-    border-color: #65bfff;
-    box-shadow: 0 0 12px #3b82f644;
-}
-
-/* Action buttons */
-.save-btn {
-    background: #2878df;
-    color: #ffffff;
-}
-
-.share-btn {
-    background: #ffffff;
-    color: #2878df;
-    border-color: #cbdcf2;
-}
-
-/* About Me box */
-.about-me {
-    background: #f8fbff;
-    border-color: #dce6f3;
-}
-
-.about-me h3 {
-    color: #2878df;
-}
-
-.about-me p {
-    color: #64748b;
-    font-size: 15px;
-    text-align: justify;
-}
-
-/* Experience, Clients and QR boxes */
-.info-box {
-    background: linear-gradient(145deg, #ffffff, #f1f6ff);
-    border-color: #dce6f3;
-}
-
-.info-number {
-    color: #17243b;
-}
-
-.info-label {
-    color: #71819a;
-}
-
-.info-box:hover {
-    border-color: #65bfff;
-    box-shadow: 0 5px 18px #2878df22;
-}
-
-/* Footer */
-footer {
-    border-color: #dce6f3;
-    color: #71819a;
-}
-
-/* Smaller mobile screens */
+/* Extra-small screens */
 @media (max-width: 360px) {
-    .card {
-        background: #ffffff;
+    .suggestion-group .suggestion-chips {
+        gap: 6px;
+    }
+
+    .suggestion-group .suggestion-chip span {
+        padding: 7px 6px;
+        font-size: 10px;
     }
 }
