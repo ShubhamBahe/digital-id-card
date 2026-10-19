@@ -3,11 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Digital ID</title>
+    <meta name="theme-color" content="#1c5fc0" />
+    <title>Uravi Holidays | Digital ID</title>
+
+    <!-- Lets the page hide reveal-on-scroll items only when JavaScript is running -->
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
     <link rel="stylesheet" href="style.css" />
 
-    <!-- Social media icons -->
+    <!-- Icons -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -15,146 +29,220 @@
   </head>
 
   <body>
-    <div class="card">
-      <div class="top">
-        <div class="brand-logo">
-          <img
-            src="assets/WhatsApp Image 2026-10-17 at 14.59.35.jpeg"
-            alt="Uravi Holidays Logo"
-          />
+    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+    <main class="page">
+      <!-- ================= DIGITAL ID CARD ================= -->
+      <article class="card">
+        <header class="hero">
+          <svg
+            class="hero__art"
+            id="heroArt"
+            viewBox="0 0 440 210"
+            preserveAspectRatio="xMidYMid slice"
+            aria-hidden="true"
+          >
+            <circle class="orb orb--1" cx="385" cy="40" r="72" />
+            <circle class="orb orb--2" cx="36" cy="175" r="52" />
+            <path
+              id="flightPath"
+              class="route"
+              d="M-20 150 C 90 30, 220 190, 460 50"
+            />
+            <g class="plane">
+              <path d="M0 0 L-18 -8 L-12 0 L-18 8 Z" />
+              <path class="plane__fold" d="M0 0 L-12 0 L-18 8 Z" />
+              <animateMotion dur="9s" repeatCount="indefinite" rotate="auto">
+                <mpath href="#flightPath" />
+              </animateMotion>
+            </g>
+          </svg>
+
+          <div class="top">
+            <div class="brand-logo">
+              <img
+                src="assets/WhatsApp Image 2026-10-17 at 14.59.35.jpeg"
+                alt="Uravi Holidays Logo"
+              />
+            </div>
+            <p>Digital ID</p>
+          </div>
+        </header>
+
+        <section class="identity">
+          <div class="profile">
+            <img
+              src="assets/WhatsApp Image 2026-10-17 at 14.59.35.jpeg"
+              alt="Uravi Holidays Profile"
+              id="profileImage"
+            />
+          </div>
+
+          <h1 id="profileName">Uravi Holidays</h1>
+          <p class="role">Your Trusted Travel Partner</p>
+
+          <p class="bio">
+            Your trusted partner for unforgettable journeys! Explore the world
+            with hassle-free travel and amazing holiday packages.
+          </p>
+
+          <div class="action-buttons">
+            <a href="tel:+918766043591" class="action-btn save-btn">
+              <i class="fa-solid fa-phone"></i>
+              Call Now
+            </a>
+
+            <button
+              type="button"
+              class="action-btn location-btn"
+              onclick="getLocation()"
+            >
+              <i class="fa-solid fa-location-dot"></i>
+              Get Location
+            </button>
+
+            <a href="#feedback" class="action-btn feedback-jump">
+              <i class="fa-solid fa-star"></i>
+              Give Feedback
+            </a>
+          </div>
+        </section>
+
+        <div class="line"></div>
+
+        <!-- ================= OUR SOCIAL MEDIA ================= -->
+        <section class="block reveal" aria-labelledby="socialTitle">
+          <h2 class="block__title" id="socialTitle">
+            <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>
+            Our Social Media
+          </h2>
+
+          <div class="tiles">
+            <a
+              href="https://www.instagram.com/uraviholidays?vrfl=b2t5bHQ3NGZpOXEz"
+              class="tile tile--instagram"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="tile__icon"
+                ><i class="fa-brands fa-instagram"></i
+              ></span>
+              <span class="tile__label">Instagram</span>
+            </a>
+
+            <a
+              href="https://www.facebook.com/share/1Dizy6Eg3Z/"
+              class="tile tile--facebook"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="tile__icon"
+                ><i class="fa-brands fa-facebook-f"></i
+              ></span>
+              <span class="tile__label">Facebook</span>
+            </a>
+
+            <a
+              href="https://linkedin.com/"
+              class="tile tile--linkedin"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="tile__icon"
+                ><i class="fa-brands fa-linkedin-in"></i
+              ></span>
+              <span class="tile__label">LinkedIn</span>
+            </a>
+
+            <a
+              href="#"
+              id="whatsappLink"
+              class="tile tile--whatsapp"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="tile__icon"
+                ><i class="fa-brands fa-whatsapp"></i
+              ></span>
+              <span class="tile__label">WhatsApp</span>
+            </a>
+          </div>
+        </section>
+
+        <!-- ================= SAVE AND SHARE ================= -->
+        <section class="block reveal" aria-labelledby="toolsTitle">
+          <h2 class="block__title" id="toolsTitle">
+            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+            Save and Share
+          </h2>
+
+          <div class="tiles" id="tools">
+            <button type="button" class="tile tile--tool" data-action="save">
+              <span class="tile__icon"
+                ><i class="fa-solid fa-address-book"></i
+              ></span>
+              <span class="tile__label">Save contact</span>
+            </button>
+
+            <button type="button" class="tile tile--tool" data-action="share">
+              <span class="tile__icon"
+                ><i class="fa-solid fa-share-nodes"></i
+              ></span>
+              <span class="tile__label">Share card</span>
+            </button>
+
+            <button type="button" class="tile tile--tool" data-action="copy">
+              <span class="tile__icon"><i class="fa-solid fa-link"></i></span>
+              <span class="tile__label">Copy link</span>
+            </button>
+
+            <button type="button" class="tile tile--tool" data-action="qr">
+              <span class="tile__icon"><i class="fa-solid fa-qrcode"></i></span>
+              <span class="tile__label">QR code</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- ================= ABOUT ME ================= -->
+        <section class="about-me reveal">
+          <h3 class="block__title">
+            <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+            About Me
+          </h3>
+          <p>
+            Make every journey memorable with Uravi Holidays! From exciting
+            holiday packages to hassle-free travel planning, we help you explore
+            the world with comfort, care, and confidence. Your dream destination
+            is just one trip away! 📞 Contact us today and let your journey
+            begin!
+          </p>
+        </section>
+
+        <!-- ================= INFO BOXES ================= -->
+        <div class="info-boxes reveal">
+          <div class="info-box">
+            <div class="info-icon"><i class="fa-solid fa-award"></i></div>
+            <p class="info-number">6+ months</p>
+            <p class="info-label">Experience</p>
+          </div>
+
+          <div class="info-box">
+            <div class="info-icon"><i class="fa-solid fa-users"></i></div>
+            <p class="info-number">100+</p>
+            <p class="info-label">Clients</p>
+          </div>
+
+          <div class="info-box smile-box">
+            <div class="info-icon"><i class="fa-solid fa-face-smile"></i></div>
+            <p class="info-number">Stay Positive</p>
+            <p class="info-label">Keep Smiling</p>
+          </div>
         </div>
-        <p>DIGITAL ID</p>
-      </div>
+      </article>
 
-      <div class="profile">
-        <img
-          src="assets\WhatsApp Image 2026-10-17 at 14.59.35.jpeg"
-          alt="Uravi Holidays Profile"
-          id="profileImage"
-        />
-      </div>
-
-      <h1 id="profileName">Uravi Holidays</h1>
-      <p class="role">Your Trusted Travel Partner</p>
-
-      <p class="bio">
-        Your trusted partner for unforgettable journeys! Explore the world with
-        hassle-free travel and amazing holiday packages.
-      </p>
-
-      <div class="line"></div>
-
-      <!-- Four Circular Social Logos -->
-      <div class="social-icons">
-        <a
-          href="https://www.instagram.com/uraviholidays?vrfl=b2t5bHQ3NGZpOXEz"
-          class="social-link instagram"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Instagram"
-        >
-          <i class="fa-brands fa-instagram"></i>
-        </a>
-
-        <a
-          href="https://www.facebook.com/share/1Dizy6Eg3Z/"
-          class="social-link facebook"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Facebook"
-        >
-          <i class="fa-brands fa-facebook-f"></i>
-        </a>
-
-        <a
-          href="https://linkedin.com/"
-          class="social-link linkedin"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="LinkedIn"
-        >
-          <i class="fa-brands fa-linkedin-in"></i>
-        </a>
-
-        <a
-          href="#"
-          id="whatsappLink"
-          class="social-link whatsapp"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="WhatsApp"
-        >
-          <i class="fa-brands fa-whatsapp"></i>
-        </a>
-      </div>
-
-      <!-- Two Rectangular Buttons -->
-      <div class="action-buttons">
-        <a href="tel:+91 8766043591" class="action-btn save-btn">
-          <i class="fa-solid fa-phone"></i>
-          Call Now
-        </a>
-
-        <button
-          type="button"
-          class="action-btn location-btn"
-          onclick="getLocation()"
-        >
-          <i class="fa-solid fa-location-dot"></i>
-          Get Location
-        </button>
-        <a href="#feedback" class="action-btn feedback-jump">
-          <i class="fa-solid fa-star"></i>
-          Give Feedback
-        </a>
-      </div>
-
-      <!-- Location Status -->
-      <p id="locationStatus">
-        <a
-          href="https://www.google.com/maps/search/?api=1&query=Uravi+Holidays"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          📍 Open Uravi Holidays in Google Maps
-        </a>
-      </p>
-      <!-- About Me -->
-      <div class="about-me">
-        <h3>About Me</h3>
-        <p>
-          Make every journey memorable with Uravi Holidays! From exciting
-          holiday packages to hassle-free travel planning, we help you explore
-          the world with comfort, care, and confidence. Your dream destination
-          is just one trip away! 📞 Contact us today and let your journey begin!
-        </p>
-      </div>
-
-      <!-- Three Info Boxes -->
-      <div class="info-boxes">
-        <div class="info-box">
-          <h2>✨</h2>
-          <p class="info-number">6+ month</p>
-          <p class="info-label">Experience</p>
-        </div>
-
-        <div class="info-box">
-          <h2>👥</h2>
-          <p class="info-number">100+</p>
-          <p class="info-label">Clients</p>
-        </div>
-
-        <div class="info-box smile-box">
-          <h2>😊</h2>
-          <p class="info-number">Stay Positive</p>
-          <p class="info-label">Keep Smiling</p>
-        </div>
-      </div>
-
-      <!-- Customer Feedback and Reviews -->
-      <section class="feedback-section" id="feedback">
+      <!-- ================= FEEDBACK ================= -->
+      <section class="card feedback-section reveal" id="feedback">
         <div class="feedback-heading">
-          <span class="feedback-eyebrow">YOUR EXPERIENCE MATTERS</span>
           <h2>Share Your Experience</h2>
           <p>Help us make your next journey even better.</p>
         </div>
@@ -306,6 +394,7 @@
             placeholder="Select suggestions above to build your review, or write your own..."
             required
           ></textarea>
+
           <label class="review-label" for="reviewerName"
             >Your name <span class="optional">(optional)</span></label
           >
@@ -315,8 +404,10 @@
             maxlength="60"
             placeholder="Enter your name"
           />
+
           <button class="submit-review" type="submit">
-            Submit Feedback <span aria-hidden="true">→</span>
+            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+            Submit Feedback
           </button>
           <p
             id="feedbackStatus"
@@ -338,7 +429,34 @@
           </div>
         </div>
       </section>
+    </main>
+
+    <!-- Back to top -->
+    <button class="to-top" id="toTop" type="button" aria-label="Back to top">
+      <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
+    </button>
+
+    <!-- QR popup -->
+    <div class="qmodal" id="qmodal" hidden>
+      <div
+        class="qmodal__box"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="qmodalTitle"
+      >
+        <button
+          type="button"
+          class="qmodal__close"
+          id="qmodalClose"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+        <h3 id="qmodalTitle"></h3>
+        <div id="qmodalBody"></div>
+      </div>
     </div>
+    <div class="qtoast" id="qtoast" role="status" aria-live="polite"></div>
 
     <script src="script.js"></script>
   </body>
