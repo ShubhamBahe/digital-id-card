@@ -17,7 +17,12 @@
   <body>
     <div class="card">
       <div class="top">
-        <h3><b id="brandInitials">SB</b><span>.</span></h3>
+        <div class="brand-logo">
+          <img
+            src="assets/WhatsApp Image 2026-10-17 at 14.59.35.jpeg"
+            alt="Uravi Holidays Logo"
+          />
+        </div>
         <p>DIGITAL ID</p>
       </div>
 
@@ -52,7 +57,7 @@
         </a>
 
         <a
-          href="https://www.facebook.com/YOUR-PROFILE"
+          href="https://www.facebook.com/share/1Dizy6Eg3Z/"
           class="social-link facebook"
           target="_blank"
           rel="noopener noreferrer"
@@ -98,6 +103,10 @@
           <i class="fa-solid fa-location-dot"></i>
           Get Location
         </button>
+        <a href="#feedback" class="action-btn feedback-jump">
+          <i class="fa-solid fa-star"></i>
+          Give Feedback
+        </a>
       </div>
 
       <!-- Location Status -->
@@ -141,6 +150,194 @@
           <p class="info-label">Keep Smiling</p>
         </div>
       </div>
+
+      <!-- Customer Feedback and Reviews -->
+      <section class="feedback-section" id="feedback">
+        <div class="feedback-heading">
+          <span class="feedback-eyebrow">YOUR EXPERIENCE MATTERS</span>
+          <h2>Share Your Experience</h2>
+          <p>Help us make your next journey even better.</p>
+        </div>
+
+        <form id="feedbackForm">
+          <div class="rating-label">How was your experience?</div>
+          <div
+            class="star-rating"
+            role="radiogroup"
+            aria-label="Rate your experience"
+          >
+            <button
+              type="button"
+              class="star"
+              data-rating="1"
+              aria-label="1 star"
+              aria-pressed="false"
+            >
+              ★
+            </button>
+            <button
+              type="button"
+              class="star"
+              data-rating="2"
+              aria-label="2 stars"
+              aria-pressed="false"
+            >
+              ★
+            </button>
+            <button
+              type="button"
+              class="star"
+              data-rating="3"
+              aria-label="3 stars"
+              aria-pressed="false"
+            >
+              ★
+            </button>
+            <button
+              type="button"
+              class="star"
+              data-rating="4"
+              aria-label="4 stars"
+              aria-pressed="false"
+            >
+              ★
+            </button>
+            <button
+              type="button"
+              class="star"
+              data-rating="5"
+              aria-label="5 stars"
+              aria-pressed="false"
+            >
+              ★
+            </button>
+          </div>
+          <p id="ratingHint" class="rating-hint">Tap a star to rate us</p>
+
+          <div class="suggestion-group">
+            <div class="rating-label">What did you like?</div>
+            <div class="suggestion-chips">
+              <label class="suggestion-chip"
+                ><input
+                  type="checkbox"
+                  name="positive"
+                  value="friendly and helpful service"
+                /><span>😊 Friendly service</span></label
+              >
+              <label class="suggestion-chip"
+                ><input
+                  type="checkbox"
+                  name="positive"
+                  value="smooth travel planning"
+                /><span>🧭 Smooth planning</span></label
+              >
+              <label class="suggestion-chip"
+                ><input
+                  type="checkbox"
+                  name="positive"
+                  value="great holiday packages"
+                /><span>🌴 Great packages</span></label
+              >
+              <label class="suggestion-chip"
+                ><input
+                  type="checkbox"
+                  name="positive"
+                  value="quick responses"
+                /><span>⚡ Quick responses</span></label
+              >
+              <label class="suggestion-chip"
+                ><input
+                  type="checkbox"
+                  name="positive"
+                  value="good value for money"
+                /><span>💰 Good value</span></label
+              >
+              <label class="suggestion-chip"
+                ><input
+                  type="checkbox"
+                  name="positive"
+                  value="clear communication"
+                /><span>💬 Clear communication</span></label
+              >
+            </div>
+          </div>
+
+          <div class="suggestion-group">
+            <div class="rating-label">
+              What could we improve? <span class="optional">(optional)</span>
+            </div>
+            <div class="suggestion-chips">
+              <label class="suggestion-chip improvement"
+                ><input
+                  type="checkbox"
+                  name="improvement"
+                  value="more package options"
+                /><span>🗺️ More options</span></label
+              >
+              <label class="suggestion-chip improvement"
+                ><input
+                  type="checkbox"
+                  name="improvement"
+                  value="faster responses"
+                /><span>⏱️ Faster replies</span></label
+              >
+              <label class="suggestion-chip improvement"
+                ><input
+                  type="checkbox"
+                  name="improvement"
+                  value="more detailed information"
+                /><span>📋 More details</span></label
+              >
+              <label class="suggestion-chip improvement"
+                ><input
+                  type="checkbox"
+                  name="improvement"
+                  value="more budget-friendly choices"
+                /><span>🏷️ Budget choices</span></label
+              >
+            </div>
+          </div>
+
+          <label class="review-label" for="reviewText">Your review</label>
+          <textarea
+            id="reviewText"
+            rows="4"
+            maxlength="600"
+            placeholder="Select suggestions above to build your review, or write your own..."
+            required
+          ></textarea>
+          <label class="review-label" for="reviewerName"
+            >Your name <span class="optional">(optional)</span></label
+          >
+          <input
+            id="reviewerName"
+            type="text"
+            maxlength="60"
+            placeholder="Enter your name"
+          />
+          <button class="submit-review" type="submit">
+            Submit Feedback <span aria-hidden="true">→</span>
+          </button>
+          <p
+            id="feedbackStatus"
+            class="feedback-status"
+            role="status"
+            aria-live="polite"
+          ></p>
+        </form>
+
+        <div class="recent-feedback">
+          <div class="recent-heading">
+            <h3>Recent Feedback</h3>
+            <span class="local-note">Saved on this device</span>
+          </div>
+          <div id="reviewList" class="review-list">
+            <p class="empty-reviews">
+              Your feedback will appear here after submission.
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
 
     <script src="script.js"></script>
