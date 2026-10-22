@@ -60,9 +60,29 @@ if (whatsappLink) {
 
     const storageKey = "uraviHolidaysReviews";
 
-    // Replace with the official Google review destination if needed.
-    const googleReviewURL =
-        "https://maps.app.goo.gl/rsNz66sUUWWkuaWY8";
+    // ================= GOOGLE REVIEW SETTINGS (EDIT HERE) =================
+    // Paste your OFFICIAL Google review link between the quotes below.
+    // Get it from your Google Business Profile:
+    //   Business Profile > "Get more reviews" (or "Ask for reviews") > Copy link
+    // It normally looks like:  https://g.page/r/XXXXXXXXXXXX/review
+    // If this is empty or not a valid review link, the site opens your
+    // Google Maps listing instead, and the customer must tap "Write a review".
+    const GOOGLE_REVIEW_URL = "https://g.page/r/CXPe05M9jvHUEAE/review";
+
+    // Fallback only: your ordinary Google Maps listing page.
+    // This does NOT open the review form by itself.
+    const GOOGLE_LISTING_URL =
+        "https://www.google.com/maps/place/URAVI+HoLidays/@21.1427793,79.0859763,17z/data=!4m8!3m7!1s0x3bd4c10d0963e1ff:0xd4f18e3d93d3de73!8m2!3d21.1427793!4d79.0859763!9m1!1b1!16s%2Fg%2F11p20x75bp";
+
+    // Only these hosts are accepted, so a typo can never send customers elsewhere.
+    const ALLOWED_GOOGLE_HOSTS = [
+        "g.page",
+        "search.google.com",
+        "www.google.com",
+        "google.com",
+        "maps.app.goo.gl",
+        "goo.gl"
+    ];
 
     let selectedRating = 0;
     let reviewWasEdited = false;
@@ -265,19 +285,254 @@ if (whatsappLink) {
     }
 
 
+    // ---------- GOOGLE DESTINATION ----------
+    function parseGoogleUrl(value) {
+        if (typeof value !== "string" || !value.trim()) return null;
+
+        try {
+            const url = new URL(value.trim());
+
+            if (
+                url.protocol !== "https:" ||
+                !ALLOWED_GOOGLE_HOSTS.includes(url.hostname)
+            ) {
+                return null;
+            }
+
+            return url;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    // A "dedicated" link is one of Google's official review-form formats.
+    function isDedicatedReviewUrl(url) {
+        if (!url) return false;
+
+        const isGooglePageLink =
+            url.hostname === "g.page" &&
+            /^\/r\/[^/]+\/review\/?$/.test(url.pathname);
+
+        const isWriteReviewLink =
+            url.hostname === "search.google.com" &&
+            url.pathname === "/local/writereview" &&
+            Boolean(url.searchParams.get("placeid"));
+
+        return isGooglePageLink || isWriteReviewLink;
+    }
+
+    function resolveGoogleDestination() {
+        const reviewUrl = parseGoogleUrl(GOOGLE_REVIEW_URL);
+
+        if (reviewUrl && isDedicatedReviewUrl(reviewUrl)) {
+            return { href: reviewUrl.href, dedicated: true };
+        }
+
+        if (GOOGLE_REVIEW_URL.trim()) {
+            console.warn(
+                "GOOGLE_REVIEW_URL is not a recognised Google review link. " +
+                "Expected https://g.page/r/.../review. Using the listing page instead."
+            );
+        }
+
+        const listingUrl = parseGoogleUrl(GOOGLE_LISTING_URL);
+
+        return listingUrl
+            ? { href: listingUrl.href, dedicated: false }
+            : null;
+    }
+
+
+    // ---------- COPY REVIEW TEXT ----------
+    function legacyCopy(text) {
+        const helper = document.createElement("textarea");
+
+        helper.value = text;
+        helper.setAttribute("readonly", "");
+        helper.style.position = "fixed";
+        helper.style.top = "0";
+        helper.style.left = "-9999px";
+        helper.style.opacity = "0";
+
+        document.body.appendChild(helper);
+
+        try {
+            helper.focus();
+            helper.select();
+            helper.setSelectionRange(0, text.length);
+
+            return document.execCommand("copy");
+        } finally {
+            document.body.removeChild(helper);
+        }
+    }
+
+    async function copyReviewText(text) {
+        // Modern clipboard API (needs HTTPS and may be blocked by the browser).
+        try {
+            if (navigator.clipboard?.writeText && window.isSecureContext) {
+                await Promise.race([
+                    navigator.clipboard.writeText(text),
+                    new Promise((_, reject) =>
+                        setTimeout(
+                            () => reject(new Error("Clipboard request timed out")),
+                            1500
+                        )
+                    )
+                ]);
+
+                return true;
+            }
+        } catch (error) {
+            console.warn("Clipboard API unavailable or blocked:", error);
+        }
+
+        // Older-browser fallback.
+        try {
+            return legacyCopy(text);
+        } catch (error) {
+            console.warn("Fallback copy failed:", error);
+            return false;
+        }
+    }
+
+
     // ---------- SUBMIT FEEDBACK ----------
+    const submitButton = form.querySelector('button[type="submit"]');
+
+    // Fallback buttons are created here in JavaScript (no HTML changes needed).
+    // They reuse the existing "submit-review" button style and stay hidden
+    // unless automatic copying fails.
+    function createFallbackButton(id, iconClass, label) {
+        const button = document.createElement("button");
+        const icon = document.createElement("i");
+
+        button.id = id;
+        button.type = "button";
+        button.className = "submit-review";
+
+        icon.className = iconClass;
+        icon.setAttribute("aria-hidden", "true");
+
+        button.appendChild(icon);
+        button.appendChild(document.createTextNode(" " + label));
+
+        return button;
+    }
+
+    const copyReviewBtn = createFallbackButton(
+        "copyReviewBtn",
+        "fa-solid fa-copy",
+        "Copy review"
+    );
+
+    const continueGoogleBtn = createFallbackButton(
+        "continueGoogleBtn",
+        "fa-brands fa-google",
+        "Continue to Google"
+    );
+
+    const fallbackPanel = document.createElement("div");
+
+    fallbackPanel.id = "reviewFallback";
+    fallbackPanel.hidden = true;
+    fallbackPanel.appendChild(copyReviewBtn);
+    fallbackPanel.appendChild(continueGoogleBtn);
+
+    if (status && status.parentNode) {
+        status.parentNode.insertBefore(fallbackPanel, status.nextSibling);
+    } else {
+        form.appendChild(fallbackPanel);
+    }
+
+    let isRedirecting = false;
+    let pending = null; // { text, destination } for the current submission
+
+    function setSubmitting(active) {
+        isRedirecting = active;
+
+        if (submitButton) {
+            submitButton.disabled = active;
+            submitButton.style.opacity = active ? "0.7" : "";
+        }
+
+        if (!active && fallbackPanel) {
+            fallbackPanel.hidden = true;
+        }
+    }
+
+    // ---------- OPEN GOOGLE ----------
+    function openGoogle(destination) {
+        try {
+            window.location.assign(destination.href);
+        } catch (error) {
+            console.error("Could not open Google:", error);
+            setSubmitting(false);
+            showStatus(
+                "Could not open Google automatically. Please search for Uravi Holidays on Google Maps to leave your review."
+            );
+        }
+    }
+
+    // ---------- FALLBACK BUTTONS (shown only if auto-copy fails) ----------
+    // A fresh tap counts as a user gesture, so copying usually works here.
+    if (copyReviewBtn) {
+        copyReviewBtn.addEventListener("click", async () => {
+            if (!pending) return;
+
+            const ok = await copyReviewText(pending.text);
+
+            if (ok) {
+                showStatus(
+                    "Review copied. Now tap Continue to Google and paste it there.",
+                    "#16734a"
+                );
+            } else {
+                if (reviewText) {
+                    reviewText.focus();
+                    reviewText.select();
+                }
+
+                showStatus(
+                    "Still could not copy. Press and hold your review text above and choose Copy, then tap Continue to Google."
+                );
+            }
+        });
+    }
+
+    if (continueGoogleBtn) {
+        continueGoogleBtn.addEventListener("click", () => {
+            if (pending) {
+                openGoogle(pending.destination);
+            }
+        });
+    }
+
+    // Re-enable the button if the customer returns with the Back button.
+    window.addEventListener("pageshow", (event) => {
+        if (event.persisted) {
+            setSubmitting(false);
+        }
+    });
+
+    if (!parseGoogleUrl(GOOGLE_REVIEW_URL)) {
+        console.warn(
+            "No official Google review link set. Edit GOOGLE_REVIEW_URL in script.js."
+        );
+    }
+
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        console.log("Feedback form submitted");
+        if (isRedirecting) return;
 
-        // Check rating.
+        // Validate star rating.
         if (!selectedRating) {
             showStatus("Please select a star rating first.");
             return;
         }
 
-        // Check review text.
+        // Validate review text.
         const text = reviewText
             ? reviewText.value.trim()
             : "";
@@ -292,7 +547,19 @@ if (whatsappLink) {
             return;
         }
 
-        // Create local review.
+        // Check the destination before saving anything.
+        const destination = resolveGoogleDestination();
+
+        if (!destination) {
+            showStatus(
+                "Google review link is not configured correctly. Please contact us directly."
+            );
+            return;
+        }
+
+        setSubmitting(true);
+
+        // Create the feedback record.
         const review = {
             name: reviewerName?.value.trim() || "Guest",
             rating: selectedRating,
@@ -300,7 +567,9 @@ if (whatsappLink) {
             date: new Date().toISOString()
         };
 
-        // Save locally if browser storage is available.
+        // Save feedback in this browser's local storage (this device only).
+        let savedLocally = false;
+
         try {
             const reviews = getReviews();
 
@@ -311,40 +580,59 @@ if (whatsappLink) {
                 JSON.stringify(reviews.slice(0, 30))
             );
 
+            savedLocally = true;
             renderReviews();
         } catch (error) {
             console.warn("Local review saving failed:", error);
         }
 
-        // Try to copy the review before redirecting.
-        let copied = false;
+        // Try copying the review text for the customer.
+        const copied = await copyReviewText(text);
 
-        try {
-            if (navigator.clipboard?.writeText) {
-                await navigator.clipboard.writeText(text);
-                copied = true;
-            }
-        } catch (error) {
-            console.warn("Could not copy review automatically:", error);
-        }
+        pending = { text, destination };
 
-        // Show the appropriate message.
+        // Status message shown BEFORE leaving the page.
+        // Nothing has been posted to Google at this point.
+        const steps = destination.dedicated
+            ? "Google will open next. Sign in if asked, choose your stars, paste your text, and tap Post."
+            : "Google Maps will open next. Tap \"Write a review\", choose your stars, paste your text, and tap Post.";
+
+        const savedNote = savedLocally
+            ? ""
+            : " (This device could not save a local copy.)";
+
         if (copied) {
             showStatus(
-                "Review copied! Opening Google Maps. Paste and submit your review there.",
+                `Your review text is copied. ${steps} It is not on Google until you post it there.${savedNote}`,
                 "#16734a"
             );
-        } else {
-            showStatus(
-                "Opening Google Maps. You can write your review there.",
-                "#16734a"
-            );
+
+            // Give the customer time to read the message, then open Google.
+            setTimeout(() => openGoogle(destination), 2500);
+            return;
         }
 
-        console.log("Opening Google Maps review destination");
+        // Copy failed: do NOT redirect automatically. Let the customer copy
+        // the text first, then continue to Google themselves.
+        if (reviewText) {
+            reviewText.focus();
+            reviewText.select();
+        }
 
-        // Redirect in the current tab.
-        window.location.assign(googleReviewURL);
+        if (fallbackPanel) {
+            fallbackPanel.hidden = false;
+
+            showStatus(
+                `Could not copy automatically. Tap Copy review, then Continue to Google. It is not on Google until you post it there.${savedNote}`
+            );
+        } else {
+            // Panel missing from the HTML: fall back to a delayed redirect.
+            showStatus(
+                `Could not copy automatically, so your text is selected above. Please copy it now. ${steps}${savedNote}`
+            );
+
+            setTimeout(() => openGoogle(destination), 5000);
+        }
     });
 
 
@@ -366,60 +654,90 @@ if (whatsappLink) {
     var modalBody = document.getElementById("qmodalBody");
     var modalClose = document.getElementById("qmodalClose");
     var toastEl = document.getElementById("qtoast");
+
     if (!tools || !modal) return;
 
-    function pageUrl() { return location.href.split("#")[0]; }
+    function pageUrl() {
+        return location.href.split("#")[0];
+    }
 
     function toast(msg) {
+        if (!toastEl) return;
+
         toastEl.textContent = msg;
         toastEl.classList.add("is-show");
+
         clearTimeout(toast.t);
-        toast.t = setTimeout(function () { toastEl.classList.remove("is-show"); }, 2200);
+
+        toast.t = setTimeout(function () {
+            toastEl.classList.remove("is-show");
+        }, 2200);
     }
 
     function copyText(text) {
         if (navigator.clipboard && window.isSecureContext) {
             return navigator.clipboard.writeText(text);
         }
+
         return new Promise(function (resolve, reject) {
             var ta = document.createElement("textarea");
+
             ta.value = text;
             ta.style.position = "fixed";
             ta.style.opacity = "0";
+
             document.body.appendChild(ta);
             ta.select();
+
             var ok = false;
-            try { ok = document.execCommand("copy"); } catch (e) {}
+
+            try {
+                ok = document.execCommand("copy");
+            } catch (e) {}
+
             document.body.removeChild(ta);
+
             ok ? resolve() : reject();
         });
     }
 
-    // ---------- popup (used by QR code) ----------
+    // ---------- MODAL ----------
     function openModal(title, html) {
         modalTitle.textContent = title;
         modalBody.innerHTML = html;
         modal.hidden = false;
         document.body.style.overflow = "hidden";
-        modalClose.focus({ preventScroll: true });
+
+        modalClose?.focus({ preventScroll: true });
     }
+
     function closeModal() {
         modal.hidden = true;
         document.body.style.overflow = "";
     }
-    modalClose.addEventListener("click", closeModal);
-    modal.addEventListener("click", function (e) { if (e.target === modal) closeModal(); });
-    document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape" && !modal.hidden) closeModal();
+
+    if (modalClose) {
+        modalClose.addEventListener("click", closeModal);
+    }
+
+    modal.addEventListener("click", function (e) {
+        if (e.target === modal) closeModal();
     });
 
-    // ---------- actions ----------
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && !modal.hidden) {
+            closeModal();
+        }
+    });
+
+    // ---------- SHARE ----------
     function share() {
         var data = {
             title: userName,
             text: "Check out " + userName + " – your trusted travel partner",
             url: pageUrl()
         };
+
         if (navigator.share) {
             navigator.share(data).catch(function () {});
         } else {
@@ -429,52 +747,87 @@ if (whatsappLink) {
 
     function copyLink() {
         copyText(pageUrl()).then(
-            function () { toast("Link copied"); },
-            function () { toast("Copy failed"); }
+            function () {
+                toast("Link copied");
+            },
+            function () {
+                toast("Copy failed");
+            }
         );
     }
 
+    // ---------- SAVE CONTACT ----------
     function saveContact() {
         var lines = [
-            "BEGIN:VCARD", "VERSION:3.0",
-            "N:;" + userName + ";;;", "FN:" + userName,
-            "ORG:" + userName, "TITLE:Your Trusted Travel Partner",
+            "BEGIN:VCARD",
+            "VERSION:3.0",
+            "N:;" + userName + ";;;",
+            "FN:" + userName,
+            "ORG:" + userName,
+            "TITLE:Your Trusted Travel Partner",
             "TEL;TYPE=WORK,VOICE:" + CALL_NUMBER,
             "URL:" + MAP_URL
         ];
-        if (/^https?:/.test(pageUrl())) lines.push("URL:" + pageUrl());
+
+        if (/^https?:/.test(pageUrl())) {
+            lines.push("URL:" + pageUrl());
+        }
+
         lines.push("END:VCARD");
 
-        var blob = new Blob([lines.join("\r\n")], { type: "text/vcard;charset=utf-8" });
+        var blob = new Blob(
+            [lines.join("\r\n")],
+            { type: "text/vcard;charset=utf-8" }
+        );
+
         var a = document.createElement("a");
+
         a.href = URL.createObjectURL(blob);
         a.download = "Uravi-Holidays.vcf";
+
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+
+        setTimeout(function () {
+            URL.revokeObjectURL(a.href);
+        }, 1000);
+
         toast("Contact file downloaded");
     }
 
+    // ---------- QR CODE ----------
     function showQr() {
-        var src = "https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=" +
+        var src =
+            "https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=" +
             encodeURIComponent(pageUrl());
+
         openModal(
             "Scan QR code",
             '<div class="qmodal__center">' +
-                '<img src="' + src + '" alt="QR code for this card" width="240" height="240">' +
+                '<img src="' + src +
+                '" alt="QR code for this card" width="240" height="240">' +
                 "<p>Scan to open this digital card on another phone.</p>" +
-                '<a class="qbtn" href="' + src + '" download="uravi-holidays-qr.png" target="_blank" rel="noopener">Download QR</a>' +
+                '<a class="qbtn" href="' + src +
+                '" download="uravi-holidays-qr.png" target="_blank" rel="noopener">Download QR</a>' +
             "</div>"
         );
     }
 
-    var actions = { save: saveContact, share: share, copy: copyLink, qr: showQr };
+    var actions = {
+        save: saveContact,
+        share: share,
+        copy: copyLink,
+        qr: showQr
+    };
 
     tools.addEventListener("click", function (e) {
         var btn = e.target.closest("[data-action]");
+
         if (!btn) return;
+
         var run = actions[btn.getAttribute("data-action")];
+
         if (run) run();
     });
 })();
@@ -487,36 +840,53 @@ if (whatsappLink) {
     var bar = document.getElementById("scrollProgress");
     var toTop = document.getElementById("toTop");
     var root = document.documentElement;
+
     var reduceMotion = window.matchMedia &&
         window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     var ticking = false;
 
-    // progress bar + back-to-top button
+    // ---------- PROGRESS BAR + BACK TO TOP ----------
     function update() {
         var max = root.scrollHeight - root.clientHeight;
         var top = window.pageYOffset || root.scrollTop || 0;
-        if (bar) bar.style.transform = "scaleX(" + (max > 0 ? Math.min(top / max, 1) : 0) + ")";
-        if (toTop) toTop.classList.toggle("is-show", top > 480);
+
+        if (bar) {
+            bar.style.transform =
+                "scaleX(" + (max > 0 ? Math.min(top / max, 1) : 0) + ")";
+        }
+
+        if (toTop) {
+            toTop.classList.toggle("is-show", top > 480);
+        }
+
         ticking = false;
     }
+
     function onScroll() {
         if (!ticking) {
             ticking = true;
             requestAnimationFrame(update);
         }
     }
+
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
+
     update();
 
     if (toTop) {
         toTop.addEventListener("click", function () {
-            window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+            window.scrollTo({
+                top: 0,
+                behavior: reduceMotion ? "auto" : "smooth"
+            });
         });
     }
 
-    // reveal sections as they scroll into view
+    // ---------- REVEAL SECTIONS ----------
     var items = document.querySelectorAll(".reveal");
+
     if ("IntersectionObserver" in window && !reduceMotion) {
         var io = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
@@ -525,14 +895,23 @@ if (whatsappLink) {
                     io.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: "0px 0px -6% 0px" });
-        items.forEach(function (el) { io.observe(el); });
+        }, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -6% 0px"
+        });
+
+        items.forEach(function (el) {
+            io.observe(el);
+        });
     } else {
-        items.forEach(function (el) { el.classList.add("is-in"); });
+        items.forEach(function (el) {
+            el.classList.add("is-in");
+        });
     }
 
-    // keep the paper plane still (mid-flight) when motion is reduced
+    // ---------- REDUCED MOTION ----------
     var art = document.getElementById("heroArt");
+
     if (reduceMotion && art && art.pauseAnimations) {
         art.pauseAnimations();
         art.setCurrentTime(3.5);
