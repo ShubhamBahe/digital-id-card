@@ -1,0 +1,1055 @@
+<!doctype html>
+<html lang="en" data-admin>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Digital ID Admin</title>
+    <style>
+      :root {
+        --p: #1c5fc0;
+        --bd: #dce6f3;
+        --bg: #f4f8ff;
+        --ink: #17243b;
+        --mu: #5d6f89;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      body {
+        font:
+          14px/1.5 "Plus Jakarta Sans",
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+      }
+      .bar {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 12px 18px;
+        background: #fff;
+        border-bottom: 1px solid var(--bd);
+      }
+      .bar b {
+        font-size: 16px;
+        margin-right: auto;
+      }
+      #st {
+        font-size: 12px;
+        color: #16734a;
+      }
+      button {
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 10px;
+        border: 1px solid var(--bd);
+        background: #fff;
+        padding: 8px 14px;
+        color: var(--ink);
+      }
+      .pri {
+        background: var(--p);
+        border-color: var(--p);
+        color: #fff;
+      }
+      .wrap {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 400px;
+        gap: 18px;
+        max-width: 1100px;
+        margin: 18px auto;
+        padding: 0 14px;
+      }
+      .note {
+        background: #fff8e6;
+        border: 1px solid #f3dca0;
+        border-radius: 14px;
+        padding: 12px 14px;
+        margin-bottom: 12px;
+        font-size: 13px;
+      }
+      details {
+        background: #fff;
+        border: 1px solid var(--bd);
+        border-radius: 14px;
+        margin-bottom: 12px;
+      }
+      summary {
+        padding: 14px 16px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .body {
+        padding: 0 16px 16px;
+        display: grid;
+        gap: 12px;
+      }
+      label {
+        display: grid;
+        gap: 5px;
+        font-weight: 600;
+        font-size: 12.5px;
+      }
+      .ck {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .f {
+        width: 100%;
+        padding: 10px;
+        border: 1.5px solid var(--bd);
+        border-radius: 10px;
+        font: inherit;
+        background: #fbfdff;
+      }
+      .f:focus {
+        outline: 3px solid rgba(40, 120, 223, 0.25);
+        border-color: var(--p);
+      }
+      textarea.f {
+        min-height: 84px;
+        resize: vertical;
+      }
+      .hint {
+        font-size: 12px;
+        color: var(--mu);
+        font-weight: 400;
+      }
+      .up,
+      .mi {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .up img,
+      .th {
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+        object-fit: cover;
+        border: 1px solid var(--bd);
+        flex: none;
+        overflow: hidden;
+        background: #eef3fa;
+      }
+      .th img,
+      .th video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .up div,
+      .mi div {
+        flex: 1;
+        display: grid;
+        gap: 6px;
+        min-width: 0;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+      }
+      .pr {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .pr button {
+        padding: 6px 10px 6px 6px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 12.5px;
+      }
+      .pr i {
+        width: 34px;
+        height: 20px;
+        border-radius: 6px;
+        display: block;
+      }
+      .cols {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+      input[type="color"] {
+        width: 100%;
+        height: 40px;
+        border: 1.5px solid var(--bd);
+        border-radius: 10px;
+        padding: 2px;
+        background: #fff;
+      }
+      aside {
+        position: sticky;
+        top: 70px;
+        align-self: start;
+      }
+      aside iframe {
+        width: 100%;
+        height: calc(100vh - 100px);
+        border: 1px solid var(--bd);
+        border-radius: 20px;
+        background: #fff;
+      }
+      aside small {
+        display: block;
+        margin: 6px 4px;
+        color: var(--mu);
+      }
+      .pr .on {
+        border-color: var(--p);
+        box-shadow: 0 0 0 2px var(--p);
+      }
+      button:disabled {
+        opacity: 0.6;
+        cursor: wait;
+      }
+      @media (max-width: 900px) {
+        .wrap {
+          grid-template-columns: 1fr;
+        }
+        aside {
+          position: static;
+        }
+        aside iframe {
+          height: 640px;
+        }
+        .cols {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bar">
+      <b>Digital ID Admin</b>
+      <span id="st"></span>
+      <button id="rst">Reset draft</button>
+      <button id="chg" title="Choose a different website folder">
+        Change folder
+      </button>
+      <button id="pub" class="pri">Save</button>
+    </div>
+    <div class="wrap">
+      <main>
+        <!-- <div class="note"><b>How it works:</b> edits show instantly in the preview. Press <b>Save</b> and choose your website folder once &ndash; the admin writes <code>config.js</code> and your uploaded photos straight into it (no ZIP, no Windows warning). Then commit and push to GitHub. On browsers without folder access (Firefox/Safari) Save downloads a ZIP instead.</div> -->
+        <div id="form"></div>
+      </main>
+      <aside>
+        <iframe
+          id="pv"
+          src="index.html?preview=1"
+          title="Live preview"
+        ></iframe>
+        <small
+          >Live preview of your ID.
+          <a href="index.html?preview=1" target="_blank"
+            >Open in new tab</a
+          ></small
+        >
+      </aside>
+    </div>
+
+    <script>
+      window.SITE_FILES = {
+        "index.html":
+          '<!doctype html>\r\n<html lang="en">\r\n  <head>\r\n    <meta charset="UTF-8" />\r\n    <meta name="viewport" content="width=device-width, initial-scale=1.0" />\r\n    <meta name="theme-color" content="#1c5fc0" />\r\n    <title>Uravi Holidays | Digital ID<\/title>\r\n\r\n    <!-- Lets the page hide reveal-on-scroll items only when JavaScript is running -->\r\n    <script>\r\n      document.documentElement.classList.add("js");\r\n    <\/script>\r\n\r\n    <!-- Font -->\r\n    <link rel="preconnect" href="https://fonts.googleapis.com" />\r\n    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />\r\n    <link\r\n      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"\r\n      rel="stylesheet"\r\n    />\r\n\r\n    <link rel="stylesheet" href="style.css" />\r\n    <link rel="stylesheet" href="templates.css" />\r\n\r\n    <!-- Icons -->\r\n    <link\r\n      rel="stylesheet"\r\n      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"\r\n    />\r\n  <\/head>\r\n\r\n  <body>\r\n    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"><\/div>\r\n\r\n    <main class="page">\r\n      <!-- ================= DIGITAL ID CARD ================= -->\r\n      <article class="card">\r\n        <header class="hero">\r\n          <svg\r\n            class="hero__art"\r\n            id="heroArt"\r\n            viewBox="0 0 440 210"\r\n            preserveAspectRatio="xMidYMid slice"\r\n            aria-hidden="true"\r\n          >\r\n            <circle class="orb orb--1" cx="385" cy="40" r="72" />\r\n            <circle class="orb orb--2" cx="36" cy="175" r="52" />\r\n            <path\r\n              id="flightPath"\r\n              class="route"\r\n              d="M-20 150 C 90 30, 220 190, 460 50"\r\n            />\r\n            <g class="plane">\r\n              <path d="M0 0 L-18 -8 L-12 0 L-18 8 Z" />\r\n              <path class="plane__fold" d="M0 0 L-12 0 L-18 8 Z" />\r\n              <animateMotion dur="9s" repeatCount="indefinite" rotate="auto">\r\n                <mpath href="#flightPath" />\r\n              <\/animateMotion>\r\n            <\/g>\r\n          <\/svg>\r\n\r\n          <div class="top">\r\n            <div class="brand-logo">\r\n              <img\r\n                src="assets/WhatsApp Image 2026-10-17 at 14.59.35.jpeg"\r\n                alt="Uravi Holidays Logo"\r\n              />\r\n            <\/div>\r\n            <p>Digital ID<\/p>\r\n          <\/div>\r\n        <\/header>\r\n\r\n        <section class="identity">\r\n          <div class="profile">\r\n            <img\r\n              src="assets/WhatsApp Image 2026-10-17 at 14.59.35.jpeg"\r\n              alt="Uravi Holidays Profile"\r\n              id="profileImage"\r\n            />\r\n          <\/div>\r\n\r\n          <h1 id="profileName">Uravi Holidays<\/h1>\r\n          <p class="role">Your Trusted Travel Partner<\/p>\r\n\r\n          <p class="bio">\r\n            Your trusted partner for unforgettable journeys! Explore the world\r\n            with hassle-free travel and amazing holiday packages.\r\n          <\/p>\r\n\r\n          <div class="action-buttons">\r\n            <a href="tel:+918766043591" class="action-btn save-btn">\r\n              <i class="fa-solid fa-phone"><\/i>\r\n              Call Now\r\n            <\/a>\r\n\r\n            <button\r\n              type="button"\r\n              class="action-btn location-btn"\r\n              onclick="getLocation()"\r\n            >\r\n              <i class="fa-solid fa-location-dot"><\/i>\r\n              Get Location\r\n            <\/button>\r\n\r\n            <a href="#feedback" class="action-btn feedback-jump">\r\n              <i class="fa-solid fa-star"><\/i>\r\n              Give Feedback\r\n            <\/a>\r\n          <\/div>\r\n        <\/section>\r\n\r\n        <div class="line"><\/div>\r\n\r\n        <!-- ================= OUR SOCIAL MEDIA ================= -->\r\n        <section class="block reveal" aria-labelledby="socialTitle">\r\n          <h2 class="block__title" id="socialTitle">\r\n            <i class="fa-solid fa-share-nodes" aria-hidden="true"><\/i>\r\n            Our Social Media\r\n          <\/h2>\r\n\r\n          <div class="tiles">\r\n            <a\r\n              href="https://www.instagram.com/uraviholidays?vrfl=b2t5bHQ3NGZpOXEz"\r\n              class="tile tile--instagram"\r\n              target="_blank"\r\n              rel="noopener noreferrer"\r\n            >\r\n              <span class="tile__icon"\r\n                ><i class="fa-brands fa-instagram"><\/i\r\n              ><\/span>\r\n              <span class="tile__label">Instagram<\/span>\r\n            <\/a>\r\n\r\n            <a\r\n              href="https://www.facebook.com/share/1Dizy6Eg3Z/"\r\n              class="tile tile--facebook"\r\n              target="_blank"\r\n              rel="noopener noreferrer"\r\n            >\r\n              <span class="tile__icon"\r\n                ><i class="fa-brands fa-facebook-f"><\/i\r\n              ><\/span>\r\n              <span class="tile__label">Facebook<\/span>\r\n            <\/a>\r\n\r\n            <a\r\n              href="https://linkedin.com/"\r\n              class="tile tile--linkedin"\r\n              target="_blank"\r\n              rel="noopener noreferrer"\r\n            >\r\n              <span class="tile__icon"\r\n                ><i class="fa-brands fa-linkedin-in"><\/i\r\n              ><\/span>\r\n              <span class="tile__label">LinkedIn<\/span>\r\n            <\/a>\r\n\r\n            <a\r\n              href="#"\r\n              id="whatsappLink"\r\n              class="tile tile--whatsapp"\r\n              target="_blank"\r\n              rel="noopener noreferrer"\r\n            >\r\n              <span class="tile__icon"\r\n                ><i class="fa-brands fa-whatsapp"><\/i\r\n              ><\/span>\r\n              <span class="tile__label">WhatsApp<\/span>\r\n            <\/a>\r\n          <\/div>\r\n        <\/section>\r\n\r\n        <!-- ================= SAVE AND SHARE ================= -->\r\n        <section class="block reveal" aria-labelledby="toolsTitle">\r\n          <h2 class="block__title" id="toolsTitle">\r\n            <i class="fa-solid fa-paper-plane" aria-hidden="true"><\/i>\r\n            Save and Share\r\n          <\/h2>\r\n\r\n          <div class="tiles" id="tools">\r\n            <button type="button" class="tile tile--tool" data-action="save">\r\n              <span class="tile__icon"\r\n                ><i class="fa-solid fa-address-book"><\/i\r\n              ><\/span>\r\n              <span class="tile__label">Save contact<\/span>\r\n            <\/button>\r\n\r\n            <button type="button" class="tile tile--tool" data-action="share">\r\n              <span class="tile__icon"\r\n                ><i class="fa-solid fa-share-nodes"><\/i\r\n              ><\/span>\r\n              <span class="tile__label">Share card<\/span>\r\n            <\/button>\r\n\r\n            <button type="button" class="tile tile--tool" data-action="copy">\r\n              <span class="tile__icon"><i class="fa-solid fa-link"><\/i><\/span>\r\n              <span class="tile__label">Copy link<\/span>\r\n            <\/button>\r\n\r\n            <button type="button" class="tile tile--tool" data-action="qr">\r\n              <span class="tile__icon"><i class="fa-solid fa-qrcode"><\/i><\/span>\r\n              <span class="tile__label">QR code<\/span>\r\n            <\/button>\r\n          <\/div>\r\n        <\/section>\r\n\r\n        <!-- ================= ABOUT ME ================= -->\r\n        <section class="about-me reveal">\r\n          <h3 class="block__title">\r\n            <i class="fa-solid fa-circle-info" aria-hidden="true"><\/i>\r\n            About Me\r\n          <\/h3>\r\n          <p>\r\n            Make every journey memorable with Uravi Holidays! From exciting\r\n            holiday packages to hassle-free travel planning, we help you explore\r\n            the world with comfort, care, and confidence. Your dream destination\r\n            is just one trip away! \ud83d\udcde Contact us today and let your journey\r\n            begin!\r\n          <\/p>\r\n        <\/section>\r\n\r\n        <!-- ================= INFO BOXES ================= -->\r\n        <div class="info-boxes reveal">\r\n          <div class="info-box">\r\n            <div class="info-icon"><i class="fa-solid fa-award"><\/i><\/div>\r\n            <p class="info-number">6+ months<\/p>\r\n            <p class="info-label">Experience<\/p>\r\n          <\/div>\r\n\r\n          <div class="info-box">\r\n            <div class="info-icon"><i class="fa-solid fa-users"><\/i><\/div>\r\n            <p class="info-number">100+<\/p>\r\n            <p class="info-label">Clients<\/p>\r\n          <\/div>\r\n\r\n          <div class="info-box smile-box">\r\n            <div class="info-icon"><i class="fa-solid fa-face-smile"><\/i><\/div>\r\n            <p class="info-number">Stay Positive<\/p>\r\n            <p class="info-label">Keep Smiling<\/p>\r\n          <\/div>\r\n        <\/div>\r\n      <\/article>\r\n\r\n      <!-- ================= FEEDBACK ================= -->\r\n      <section class="card feedback-section reveal" id="feedback">\r\n        <div class="feedback-heading">\r\n          <h2>Share Your Experience<\/h2>\r\n          <p>Help us make your next journey even better.<\/p>\r\n        <\/div>\r\n\r\n        <form id="feedbackForm">\r\n          <div class="rating-label">How was your experience?<\/div>\r\n          <div\r\n            class="star-rating"\r\n            role="radiogroup"\r\n            aria-label="Rate your experience"\r\n          >\r\n            <button\r\n              type="button"\r\n              class="star"\r\n              data-rating="1"\r\n              aria-label="1 star"\r\n              aria-pressed="false"\r\n            >\r\n              \u2605\r\n            <\/button>\r\n            <button\r\n              type="button"\r\n              class="star"\r\n              data-rating="2"\r\n              aria-label="2 stars"\r\n              aria-pressed="false"\r\n            >\r\n              \u2605\r\n            <\/button>\r\n            <button\r\n              type="button"\r\n              class="star"\r\n              data-rating="3"\r\n              aria-label="3 stars"\r\n              aria-pressed="false"\r\n            >\r\n              \u2605\r\n            <\/button>\r\n            <button\r\n              type="button"\r\n              class="star"\r\n              data-rating="4"\r\n              aria-label="4 stars"\r\n              aria-pressed="false"\r\n            >\r\n              \u2605\r\n            <\/button>\r\n            <button\r\n              type="button"\r\n              class="star"\r\n              data-rating="5"\r\n              aria-label="5 stars"\r\n              aria-pressed="false"\r\n            >\r\n              \u2605\r\n            <\/button>\r\n          <\/div>\r\n          <p id="ratingHint" class="rating-hint">Tap a star to rate us<\/p>\r\n\r\n          <div class="suggestion-group">\r\n            <div class="rating-label">What did you like?<\/div>\r\n            <div class="suggestion-chips">\r\n              <label class="suggestion-chip"\r\n                ><input\r\n                  type="checkbox"\r\n                  name="positive"\r\n                  value="friendly and helpful service"\r\n                /><span>\ud83d\ude0a Friendly service<\/span><\/label\r\n              >\r\n              <label class="suggestion-chip"\r\n                ><input\r\n                  type="checkbox"\r\n                  name="positive"\r\n                  value="smooth travel planning"\r\n                /><span>\ud83e\udded Smooth planning<\/span><\/label\r\n              >\r\n              <label class="suggestion-chip"\r\n                ><input\r\n                  type="checkbox"\r\n                  name="positive"\r\n                  value="great holiday packages"\r\n                /><span>\ud83c\udf34 Great packages<\/span><\/label\r\n              >\r\n              <label class="suggestion-chip"\r\n                ><input\r\n                  type="checkbox"\r\n                  name="positive"\r\n                  value="quick responses"\r\n                /><span>\u26a1 Quick responses<\/span><\/label\r\n              >\r\n              <label class="suggestion-chip"\r\n                ><input\r\n                  type="checkbox"\r\n                  name="positive"\r\n                  value="good value for money"\r\n                /><span>\ud83d\udcb0 Good value<\/span><\/label\r\n              >\r\n              <label class="suggestion-chip"\r\n                ><input\r\n                  type="checkbox"\r\n                  name="positive"\r\n                  value="clear communication"\r\n                /><span>\ud83d\udcac Clear communication<\/span><\/label\r\n              >\r\n            <\/div>\r\n          <\/div>\r\n\r\n          <div class="suggestion-group">\r\n            <div class="rating-label">\r\n              What could we improve? <span class="optional">(optional)<\/span>\r\n            <\/div>\r\n            <div class="suggestion-chips">\r\n              <label class="suggestion-chip improvement"\r\n                ><input\r\n                  type="checkbox"\r\n                  name="improvement"\r\n                  value="more package options"\r\n                /><span>\ud83d\uddfa\ufe0f More options<\/span><\/label\r\n              >\r\n              <label class="suggestion-chip improvement"\r\n                ><input\r\n                  type="checkbox"\r\n                  name="improvement"\r\n                  value="faster responses"\r\n                /><span>\u23f1\ufe0f Faster replies<\/span><\/label\r\n              >\r\n              <label class="suggestion-chip improvement"\r\n                ><input\r\n                  type="checkbox"\r\n                  name="improvement"\r\n                  value="more detailed information"\r\n                /><span>\ud83d\udccb More details<\/span><\/label\r\n              >\r\n              <label class="suggestion-chip improvement"\r\n                ><input\r\n                  type="checkbox"\r\n                  name="improvement"\r\n                  value="more budget-friendly choices"\r\n                /><span>\ud83c\udff7\ufe0f Budget choices<\/span><\/label\r\n              >\r\n            <\/div>\r\n          <\/div>\r\n\r\n          <label class="review-label" for="reviewText">Your review<\/label>\r\n          <textarea\r\n            id="reviewText"\r\n            rows="4"\r\n            maxlength="600"\r\n            placeholder="Select suggestions above to build your review, or write your own..."\r\n            required\r\n          ><\/textarea>\r\n\r\n          <label class="review-label" for="reviewerName"\r\n            >Your name <span class="optional">(optional)<\/span><\/label\r\n          >\r\n          <input\r\n            id="reviewerName"\r\n            type="text"\r\n            maxlength="60"\r\n            placeholder="Enter your name"\r\n          />\r\n\r\n          <button class="submit-review" type="submit">\r\n            <i class="fa-solid fa-paper-plane" aria-hidden="true"><\/i>\r\n            Submit Feedback\r\n          <\/button>\r\n          <p\r\n            id="feedbackStatus"\r\n            class="feedback-status"\r\n            role="status"\r\n            aria-live="polite"\r\n          ><\/p>\r\n        <\/form>\r\n\r\n        <div class="recent-feedback">\r\n          <div class="recent-heading">\r\n            <h3>Recent Feedback<\/h3>\r\n            <span class="local-note">Saved on this device<\/span>\r\n          <\/div>\r\n          <div id="reviewList" class="review-list">\r\n            <p class="empty-reviews">\r\n              Your feedback will appear here after submission.\r\n            <\/p>\r\n          <\/div>\r\n        <\/div>\r\n      <\/section>\r\n    <\/main>\r\n\r\n    <!-- Back to top -->\r\n    <button class="to-top" id="toTop" type="button" aria-label="Back to top">\r\n      <i class="fa-solid fa-chevron-up" aria-hidden="true"><\/i>\r\n    <\/button>\r\n\r\n    <!-- QR popup -->\r\n    <div class="qmodal" id="qmodal" hidden>\r\n      <div\r\n        class="qmodal__box"\r\n        role="dialog"\r\n        aria-modal="true"\r\n        aria-labelledby="qmodalTitle"\r\n      >\r\n        <button\r\n          type="button"\r\n          class="qmodal__close"\r\n          id="qmodalClose"\r\n          aria-label="Close"\r\n        >\r\n          &times;\r\n        <\/button>\r\n        <h3 id="qmodalTitle"><\/h3>\r\n        <div id="qmodalBody"><\/div>\r\n      <\/div>\r\n    <\/div>\r\n    <div class="qtoast" id="qtoast" role="status" aria-live="polite"><\/div>\r\n\r\n    <script src="config.js"><\/script>\r\n    <script src="card-config.js"><\/script>\r\n    <script src="script.js"><\/script>\r\n  <\/body>\r\n<\/html>\r\n',
+        "card-config.js":
+          '// Applies the saved settings (config.js, or a newer draft from the admin page) to index.html.\n(function () {\n  "use strict";\n  var KEY = "uraviCardDraft", DB = "uraviCardMedia";\n  var FONTS = ["Plus Jakarta Sans", "Poppins", "Inter", "Nunito", "Montserrat", "Playfair Display", "DM Sans", "Outfit", "Lora", "Space Grotesk"];\n  var TEMPLATES = {\n    classic:  { name: "Classic",  theme: { primary: "#1c5fc0", secondary: "#2878df", light: "#4b9cff", accent: "#ffb020", radius: 28, font: "Plus Jakarta Sans", align: "center", photo: "circle",  buttons: "filled",  heroH: 168 } },\n    minimal:  { name: "Minimal",  theme: { primary: "#0d9488", secondary: "#14b8a6", light: "#5eead4", accent: "#f59e0b", radius: 14, font: "Inter",              align: "center", photo: "circle",  buttons: "outline", heroH: 130, plane: false } },\n    aurora:   { name: "Aurora",   theme: { primary: "#7c3aed", secondary: "#db2777", light: "#38bdf8", accent: "#fbbf24", radius: 32, font: "Outfit",             align: "center", photo: "circle",  buttons: "filled",  heroH: 168 } },\n    poster:   { name: "Poster",   theme: { primary: "#e11d48", secondary: "#be123c", light: "#fb7185", accent: "#facc15", radius: 8,  font: "Montserrat",         align: "center", photo: "square",  buttons: "filled",  heroH: 150, plane: false } },\n    business: { name: "Business", theme: { primary: "#0f766e", secondary: "#14b8a6", light: "#5eead4", accent: "#f97316", radius: 18, font: "DM Sans",            align: "left",   photo: "rounded", buttons: "soft",    heroH: 140 } },\n    ticket:    { name: "Ticket",    theme: { primary: "#0f4c81", secondary: "#1d6fb8", light: "#5aa9e6", accent: "#ff6b35", radius: 18, font: "Space Grotesk", align: "left",   photo: "rounded", buttons: "soft",    heroH: 120 } },\n    sunset:    { name: "Sunset",    theme: { primary: "#f43f5e", secondary: "#fb923c", light: "#fbbf24", accent: "#7c3aed", radius: 36, font: "Outfit",        align: "center", photo: "circle",  buttons: "filled",  heroH: 230 } },\n    editorial: { name: "Editorial", theme: { primary: "#c2410c", secondary: "#9a3412", light: "#fb923c", accent: "#b45309", radius: 8,  font: "Playfair Display", align: "left", photo: "square",  buttons: "outline", heroH: 120, plane: false } }\n  };\n\n  // ---- media storage (IndexedDB) used for files uploaded in the admin page ----\n  var store = {\n    db: function () {\n      return this._d || (this._d = new Promise(function (ok, no) {\n        var r = indexedDB.open(DB, 1);\n        r.onupgradeneeded = function () { r.result.createObjectStore("f"); };\n        r.onsuccess = function () { ok(r.result); };\n        r.onerror = function () { no(r.error); };\n      }));\n    },\n    tx: function (mode, fn) {\n      return this.db().then(function (d) {\n        return new Promise(function (ok, no) {\n          var t = d.transaction("f", mode), q = fn(t.objectStore("f"));\n          t.oncomplete = function () { ok(q && q.result); };\n          t.onerror = function () { no(t.error); };\n        });\n      });\n    },\n    put: function (id, rec) { return this.tx("readwrite", function (s) { return s.put(rec, id); }); },\n    get: function (id) { return this.tx("readonly", function (s) { return s.get(id); }); },\n    del: function (id) { return this.tx("readwrite", function (s) { return s["delete"](id); }); }\n  };\n\n  function load(force) {\n    var pub = window.CARD_PUBLISHED || {}, d = null;\n    try { d = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}\n    // A draft only wins while it is newer than the published file.\n    // Drafts only apply in the admin page / its preview (?preview=1) - never for real visitors.\n    return (force || /[?&]preview=1/.test(location.search)) && d && (force || (d.savedAt || 0) > (pub.savedAt || 0)) ? d : pub;\n  }\n\n  function url(ref) {\n    if (!ref) return Promise.resolve("");\n    if (ref.indexOf("idb:") !== 0) return Promise.resolve(ref);\n    return store.get(ref.slice(4)).then(function (r) { return r ? URL.createObjectURL(r.blob) : ""; })["catch"](function () { return ""; });\n  }\n\n  window.CardStore = { store: store, KEY: KEY, load: load, url: url, TEMPLATES: TEMPLATES, fonts: FONTS };\n  if (document.documentElement.hasAttribute("data-admin")) return;\n\n  // ---- apply settings ----\n  var c = window.CARD = load();\n  var $ = function (s) { return document.querySelector(s); };\n  var T = function (s, v) { var e = $(s); if (e && v != null) e.textContent = v; };\n  var col = function (v, d) { return /^#[0-9a-f]{3,8}$/i.test(v || "") ? v : d; };\n\n  document.title = (c.name || "") + " | " + (c.badge || "Digital ID");\n  T("#profileName", c.name);\n  T(".role", c.tagline);\n  T(".bio", c.bio);\n  T(".top p", c.badge);\n  T(".about-me p", c.about);\n  T(".feedback-heading h2", c.feedbackTitle);\n  T(".feedback-heading p", c.feedbackSub);\n\n  var ah = $(".about-me .block__title");\n  if (ah && c.aboutTitle != null && ah.lastChild) ah.lastChild.textContent = " " + c.aboutTitle;\n\n  var call = $(".save-btn");\n  if (call && c.phone) call.href = "tel:" + c.phone;\n\n  var soc = c.social || {};\n  [["instagram", ".tile--instagram"], ["facebook", ".tile--facebook"], ["linkedin", ".tile--linkedin"]].forEach(function (p) {\n    var a = $(p[1]);\n    if (!a || soc[p[0]] == null) return;\n    if (soc[p[0]]) a.href = soc[p[0]]; else a.style.display = "none";\n  });\n  if (c.whatsapp === "") { var w = $(".tile--whatsapp"); if (w) w.style.display = "none"; }\n\n  document.querySelectorAll(".info-box").forEach(function (b, i) {\n    var s = (c.stats || [])[i];\n    if (!s) return;\n    if (s.value != null) b.querySelector(".info-number").textContent = s.value;\n    if (s.label != null) b.querySelector(".info-label").textContent = s.label;\n  });\n\n  var sh = c.show || {};\n  function hide(sel, on) { if (on === false) document.querySelectorAll(sel).forEach(function (e) { e.style.display = "none"; }); }\n  hide(\'[aria-labelledby="socialTitle"]\', sh.social);\n  hide(\'[aria-labelledby="toolsTitle"]\', sh.tools);\n  hide(".about-me", sh.about);\n  hide(".info-boxes", sh.stats);\n  hide("#feedback, .feedback-jump", sh.feedback);\n\n  // ---- theme ----\n  var t = c.theme || {};\n  var B = document.body.dataset;\n  B.template = TEMPLATES[c.template] ? c.template : "classic";\n  B.align = t.align === "left" ? "left" : "center";\n  B.photo = t.photo || "circle";\n  B.btn = t.buttons || "filled";\n  if (TEMPLATES[B.template].dark || B.template === "night") B.dark = ""; else delete B.dark;\n  var font = FONTS.indexOf(t.font) > -1 ? t.font : FONTS[0];\n  var primary = col(t.primary, "#1c5fc0");\n  var radius = Math.max(8, Math.min(40, Number(t.radius) || 28));\n  if (font !== FONTS[0]) {\n    var l = document.createElement("link");\n    l.rel = "stylesheet";\n    l.href = "https://fonts.googleapis.com/css2?family=" + font.replace(/ /g, "+") + ":wght@400;500;600;700;800&display=swap";\n    document.head.appendChild(l);\n  }\n  var meta = $(\'meta[name="theme-color"]\');\n  if (meta) meta.content = primary;\n\n  var css =\n    \':root{--blue-deep:\' + primary + \';--blue:\' + col(t.secondary, "#2878df") + \';--sky:\' + col(t.light, "#4b9cff") +\n    \';--sun:\' + col(t.accent, "#ffb020") + \';--r-card:\' + radius + \'px;--font:"\' + font + \'",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;\' +\n    \'--ice:color-mix(in srgb,var(--sky) 16%,#fff);--mist:color-mix(in srgb,var(--sky) 7%,#fff);\' +\n    \'--line:color-mix(in srgb,var(--sky) 28%,#fff);--navy:color-mix(in srgb,var(--blue-deep) 30%,#000)}\' +\n    \'body{background:radial-gradient(900px 520px at 90% -10%,color-mix(in srgb,var(--sky) 30%,#fff) 0,transparent 60%),\' +\n    \'radial-gradient(700px 520px at -10% 45%,color-mix(in srgb,var(--sky) 18%,#fff) 0,transparent 60%),\' +\n    \'linear-gradient(180deg,color-mix(in srgb,var(--sky) 10%,#fff),color-mix(in srgb,var(--sky) 3%,#fff));background-attachment:fixed}\' +\n    \'.hero,.feedback-heading{background:linear-gradient(135deg,var(--blue-deep) 0%,var(--blue) 50%,var(--sky) 100%)}\' +\n    \'.plane__fold{fill:color-mix(in srgb,var(--blue-deep) 30%,transparent)}\' +\n    (t.plane === false ? \'.plane,.route{display:none}\' : \'\') +\n    \'.gal{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.gal figure{margin:0;text-align:left}\' +\n    \'.gal figure:only-child,.gal .v{grid-column:1/-1}\' +\n    \'.gal img,.gal video{width:100%;display:block;aspect-ratio:1/1;object-fit:cover;border-radius:var(--r-tile);border:1px solid var(--line);background:#000}\' +\n    \'.gal .v video{aspect-ratio:16/9;object-fit:contain}.gal img{cursor:zoom-in}\' +\n    \'.gal figcaption{margin:6px 4px 0;font-size:12px;color:var(--muted)}\' +\n    \'.lb{position:fixed;inset:0;z-index:1200;display:grid;place-items:center;background:rgba(0,0,0,.88);cursor:zoom-out}\' +\n    \'.lb img{max-width:94vw;max-height:90vh;border-radius:12px}\' +\n    \'.hero{min-height:\' + Math.max(120, Math.min(300, Number(t.heroH) || 168)) + \'px}\' + String(c.customCss || "");\n  var st = document.createElement("style");\n  st.id = "cardTheme";\n  st.textContent = css;\n  document.head.appendChild(st);\n\n  // ---- uploaded logo / profile photo ----\n  var im = c.images || {};\n  [[im.logo, ".brand-logo img"], [im.profile, "#profileImage"]].forEach(function (p) {\n    if (!p[0]) return;\n    url(p[0]).then(function (u) { var e = $(p[1]); if (u && e) e.src = u; });\n  });\n\n  // ---- photo / logo position: zoom + left-right + up-down ----\n  var nm = function (v, d) { v = Number(v); return isNaN(v) ? d : v; };\n  [[im.logoFit, ".brand-logo img"], [im.profileFit, "#profileImage"]].forEach(function (p) {\n    var e = $(p[1]), f = p[0];\n    if (!e || !f) return;\n    var x = nm(f.x, 50), y = nm(f.y, 50), z = Math.max(1, Math.min(3, nm(f.z, 1)));\n    e.style.objectPosition = x + "% " + y + "%";\n    e.style.transformOrigin = x + "% " + y + "%";\n    e.style.transform = "scale(" + z + ")";\n    if (z > 1 && e.parentNode) e.parentNode.style.overflow = "hidden";\n  });\n\n  // ---- quick links: only appear when links were added ----\n  var ql = (c.links || []).filter(function (l) { return l && l.label && /^(https?:|tel:|mailto:)/i.test(l.url || ""); });\n  if (ql.length && sh.links !== false) {\n    var qs = document.createElement("section");\n    qs.className = "block reveal";\n    qs.id = "customLinks";\n    qs.innerHTML = \'<h2 class="block__title"><i class="fa-solid fa-link" aria-hidden="true"><\/i> <span><\/span><\/h2><div class="qlinks"><\/div>\';\n    qs.querySelector("span").textContent = c.linksTitle || "Quick Links";\n    ql.forEach(function (l) {\n      var a = document.createElement("a"), i = document.createElement("i"), sp = document.createElement("span");\n      a.className = "qlink"; a.href = l.url;\n      if (!/^(tel|mailto):/i.test(l.url)) { a.target = "_blank"; a.rel = "noopener noreferrer"; }\n      i.className = "fa-solid " + (/^fa-[a-z0-9-]+$/.test(l.icon || "") ? l.icon : "fa-link");\n      sp.textContent = l.label;\n      a.appendChild(i); a.appendChild(sp);\n      qs.querySelector(".qlinks").appendChild(a);\n    });\n    var ln = $(".line");\n    if (ln) ln.parentNode.insertBefore(qs, ln.nextSibling);\n  }\n\n  // ---- optional gallery: only appears when media was added ----\n  function lightbox(u) {\n    var o = document.createElement("div"), i = document.createElement("img");\n    o.className = "lb"; i.src = u; i.alt = "";\n    o.appendChild(i);\n    o.onclick = function () { o.remove(); };\n    document.body.appendChild(o);\n  }\n\n  var list = (c.media || []).filter(function (m) { return m && m.src; });\n  if (!list.length || sh.gallery === false) return;\n\n  Promise.all(list.map(function (m) { return url(m.src).then(function (u) { return { m: m, u: u }; }); })).then(function (all) {\n    all = all.filter(function (x) { return x.u; });\n    var anchor = $(".about-me");\n    if (!all.length || !anchor) return;\n\n    var sec = document.createElement("section");\n    sec.className = "block reveal is-in";\n    sec.id = "gallery";\n    sec.innerHTML = \'<h2 class="block__title"><i class="fa-solid fa-images" aria-hidden="true"><\/i> <span><\/span><\/h2><div class="gal"><\/div>\';\n    sec.querySelector("span").textContent = c.galleryTitle || "Gallery";\n    var g = sec.querySelector(".gal");\n\n    all.forEach(function (x) {\n      var f = document.createElement("figure"), el;\n      if (x.m.type === "video") {\n        f.className = "v";\n        el = document.createElement("video");\n        el.controls = true; el.playsInline = true; el.preload = "metadata"; el.src = x.u;\n      } else {\n        el = document.createElement("img");\n        el.src = x.u; el.alt = x.m.caption || ""; el.loading = "lazy";\n        el.onclick = function () { lightbox(x.u); };\n      }\n      f.appendChild(el);\n      if (x.m.caption) { var k = document.createElement("figcaption"); k.textContent = x.m.caption; f.appendChild(k); }\n      g.appendChild(f);\n    });\n    anchor.parentNode.insertBefore(sec, anchor);\n  });\n})();\n',
+        "templates.css":
+          '/* Templates + layout options. Chosen in the admin page; applied by card-config.js via data-* attributes on <body>. */\n.qlinks{display:grid;gap:10px}\n.qlink{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid var(--line);border-radius:var(--r-field);background:var(--mist);color:var(--navy);font-weight:700;font-size:14px;text-decoration:none;text-align:left;transition:transform .25s var(--ease),box-shadow .25s}\n.qlink i{width:34px;height:34px;flex:none;display:grid;place-items:center;border-radius:10px;font-size:14px;color:#fff;background:linear-gradient(135deg,var(--blue),var(--sky))}\n.qlink:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(40,120,223,.16)}\n\n/* alignment / photo shape / button style */\n[data-align=left] .identity{text-align:left}\n[data-align=left] .profile,[data-align=left] .bio{margin-left:0}\n[data-photo=rounded] .profile,[data-photo=rounded] .profile img{border-radius:26px}\n[data-photo=square] .profile,[data-photo=square] .profile img{border-radius:8px}\n[data-btn=outline] .save-btn{background:transparent;color:var(--blue-deep);border:1.5px solid var(--blue-deep);box-shadow:none}\n[data-btn=soft] .save-btn{background:var(--ice);color:var(--blue-deep);box-shadow:none}\n\n/* minimal */\nbody[data-template=minimal]{background:#f5f6f8}\n[data-template=minimal] .card{box-shadow:0 1px 3px rgba(0,0,0,.1)}\n[data-template=minimal] .hero,[data-template=minimal] .feedback-heading{background:var(--blue-deep);border-radius:0}\n[data-template=minimal] .route,[data-template=minimal] .plane{display:none}\n[data-template=minimal] .tile__icon,[data-template=minimal] .info-box{box-shadow:none}\n\n/* night */\nbody[data-dark]{--navy:#f1f5ff;--ink:#e6ebf7;--muted:#9fb0cc;--ice:#1c2540;--mist:#161d33;--line:#27324f;background:#0b1020}\n[data-dark] .card,[data-dark] .qmodal__box{background:#12182b;border-color:#27324f}\n[data-dark] .info-box{background:#161d33}\n[data-dark] .location-btn{background:#161d33;border-color:#27324f;color:#a9b8ff}\n[data-dark] .suggestion-chip span{color:#c3cee4}\n[data-dark] .review-copy{color:#b5c1d8}\n[data-dark] .star{color:#34405f}\n[data-dark] .star.active{color:var(--sun)}\n[data-dark] #feedbackForm textarea,[data-dark] #feedbackForm input[type=text]{background:#0f1528;color:#e6ebf7}\n[data-dark] .qtoast{background:#27324f}\n\n/* aurora (glass) */\nbody[data-template=aurora]{background:linear-gradient(135deg,var(--blue-deep),var(--blue) 45%,var(--sky))}\n[data-template=aurora] .card{background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-color:rgba(255,255,255,.6)}\n\n/* poster (bold) */\nbody[data-template=poster]{background:var(--sun)}\n[data-template=poster] .card{border:3px solid var(--navy);box-shadow:8px 8px 0 var(--navy)}\n[data-template=poster] .hero,[data-template=poster] .feedback-heading{background:var(--blue-deep);border-radius:0;border-bottom:3px solid var(--navy)}\n[data-template=poster] h1,[data-template=poster] .block__title{text-transform:uppercase}\n[data-template=poster] .tile__icon,[data-template=poster] .action-btn,[data-template=poster] .info-box,[data-template=poster] .about-me,[data-template=poster] .qlink{border:2px solid var(--navy);box-shadow:3px 3px 0 var(--navy)}\n\n/* business */\n[data-template=business] .hero{border-radius:0 0 24px 24px}\n[data-template=business] .tile__icon{border-radius:50%}\n\n/* ===== ticket: boarding pass, photo beside the name, perforated divider ===== */\nbody[data-template=ticket]{background:#e9eef7}\n[data-template=ticket] .card{border:2px solid var(--navy)}\n[data-template=ticket] .hero,[data-template=ticket] .feedback-heading{background:var(--blue-deep);border-radius:0;border-bottom:3px dashed rgba(255,255,255,.55)}\n[data-template=ticket] .identity{display:grid;grid-template-columns:84px 1fr;column-gap:16px;align-items:center;text-align:left;margin-top:0;padding-top:20px}\n[data-template=ticket] .hero,[data-template=editorial] .hero{padding-bottom:24px}\n[data-template=ticket] .profile{grid-row:1/span 2;width:84px;height:84px;margin:0}\n[data-template=ticket] h1{font-size:22px;align-self:end}\n[data-template=ticket] .role{margin-top:2px;align-self:start}\n[data-template=ticket] .bio,[data-template=ticket] .action-buttons{grid-column:1/-1;max-width:none;margin-left:0}\n[data-template=ticket] .line{position:relative;margin:26px 0 0;border-top:3px dotted var(--sky)}\n[data-template=ticket] .line::before,[data-template=ticket] .line::after{content:"";position:absolute;top:-14px;width:26px;height:26px;border-radius:50%;background:#e9eef7;border:2px solid var(--navy)}\n[data-template=ticket] .line::before{left:-15px}\n[data-template=ticket] .line::after{right:-15px}\n[data-template=ticket] .tile__icon{border-radius:50%;border:2px dashed var(--navy);box-shadow:none}\n[data-template=ticket] .block__title{font-size:13px;letter-spacing:.16em;text-transform:uppercase}\n[data-template=ticket] .info-box{border-style:dashed}\n\n/* ===== sunset: tall wave header, big photo, pill buttons, pill tiles ===== */\nbody[data-template=sunset]{background:linear-gradient(180deg,color-mix(in srgb,var(--sun) 28%,#fff),color-mix(in srgb,var(--blue) 14%,#fff))}\n[data-template=sunset] .hero,[data-template=sunset] .feedback-heading{border-radius:0 0 50%/0 0 90px 90px}\n[data-template=sunset] .identity{margin-top:-64px}\n[data-template=sunset] .profile{width:120px;height:120px}\n[data-template=sunset] .action-buttons{grid-template-columns:1fr}\n[data-template=sunset] .action-btn{border-radius:999px}\n[data-template=sunset] .tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}\n[data-template=sunset] .tile{flex-direction:row;justify-content:flex-start;gap:10px;padding:8px 14px 8px 8px;background:var(--mist);border-radius:999px}\n[data-template=sunset] .tile__icon{width:42px;height:42px;font-size:18px;border-radius:50%}\n\n/* ===== editorial: magazine, name beside photo, list-style rows ===== */\nbody[data-template=editorial]{background:#f3ecdf}\n[data-template=editorial] .card{background:#fffdf8;border:1px solid var(--navy);box-shadow:none}\n[data-template=editorial] .hero,[data-template=editorial] .feedback-heading{background:var(--blue-deep);border-radius:0}\n[data-template=editorial] .identity{display:grid;grid-template-columns:minmax(0,1fr) 100px;column-gap:16px;text-align:left;margin-top:0;padding-top:20px}\n[data-template=editorial] .profile{grid-column:2;grid-row:1/span 2;width:100px;height:100px;margin:0}\n[data-template=editorial] h1{grid-column:1;grid-row:1;align-self:end;font-size:30px;line-height:1.1;overflow-wrap:break-word}\n[data-template=editorial] .role{grid-column:1;grid-row:2;align-self:start;font-style:italic}\n[data-template=editorial] .bio,[data-template=editorial] .action-buttons{grid-column:1/-1;max-width:none;margin-left:0}\n[data-template=editorial] .bio{border-top:1px solid var(--navy);padding-top:14px}\n[data-template=editorial] .action-buttons{grid-template-columns:1fr;gap:0}\n[data-template=editorial] .action-btn{justify-content:flex-start;gap:12px;padding:14px 4px;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;color:var(--navy);box-shadow:none}\n[data-template=editorial] .tiles{grid-template-columns:1fr;gap:0}\n[data-template=editorial] .tile{flex-direction:row;justify-content:flex-start;gap:14px;padding:12px 4px;border-radius:0;border-bottom:1px solid var(--line)}\n[data-template=editorial] .tile__icon{width:36px;height:36px;font-size:16px;border-radius:50%}\n[data-template=editorial] .info-box,[data-template=editorial] .about-me{border-radius:0;background:transparent}\n[data-template=editorial] .block__title{font-size:20px}\n',
+        "style.css":
+          '\r\n\r\n:root {\r\n    --navy: #0a2540;\r\n    --blue-deep: #1c5fc0;\r\n    --blue: #2878df;\r\n    --sky: #4b9cff;\r\n    --ice: #eaf3ff;\r\n    --mist: #f5f9ff;\r\n    --line: #dce6f3;\r\n    --ink: #17243b;\r\n    --muted: #5d6f89;\r\n    --sun: #ffb020;\r\n    --ok: #16734a;\r\n\r\n    --r-card: 28px;\r\n    --r-tile: 18px;\r\n    --r-field: 14px;\r\n\r\n    --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;\r\n    --ease: cubic-bezier(0.2, 0.8, 0.2, 1);\r\n}\r\n\r\n/* ================= RESET + SCROLL ================= */\r\n* {\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n\r\nhtml {\r\n    scroll-behavior: smooth;\r\n    scroll-padding-top: 16px;\r\n    scrollbar-width: thin;\r\n    scrollbar-color: var(--sky) var(--ice);\r\n}\r\n\r\nhtml::-webkit-scrollbar { width: 10px; }\r\nhtml::-webkit-scrollbar-track { background: var(--ice); }\r\nhtml::-webkit-scrollbar-thumb {\r\n    background: linear-gradient(180deg, var(--sky), var(--blue-deep));\r\n    border-radius: 999px;\r\n    border: 2px solid var(--ice);\r\n}\r\n\r\nbody {\r\n    min-height: 100vh;\r\n    font-family: var(--font);\r\n    color: var(--ink);\r\n    -webkit-font-smoothing: antialiased;\r\n    background:\r\n        radial-gradient(900px 520px at 90% -10%, #cfe4ff 0, transparent 60%),\r\n        radial-gradient(700px 520px at -10% 45%, #dff0ff 0, transparent 60%),\r\n        linear-gradient(180deg, #eef5ff, #f8fbff);\r\n    background-attachment: fixed;\r\n}\r\n\r\nbutton,\r\ninput,\r\ntextarea {\r\n    font-family: inherit;\r\n}\r\n\r\na:focus-visible,\r\nbutton:focus-visible {\r\n    outline: 3px solid rgba(40, 120, 223, 0.5);\r\n    outline-offset: 3px;\r\n}\r\n\r\n.page {\r\n    width: 100%;\r\n    max-width: 440px;\r\n    margin: 0 auto;\r\n    padding: 20px 14px 64px;\r\n    display: grid;\r\n    gap: 22px;\r\n}\r\n\r\n/* ================= SCROLL PROGRESS + BACK TO TOP ================= */\r\n.scroll-progress {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0;\r\n    z-index: 50;\r\n    width: 100%;\r\n    height: 4px;\r\n    transform: scaleX(0);\r\n    transform-origin: 0 50%;\r\n    background: linear-gradient(90deg, var(--sky), var(--sun));\r\n    border-radius: 0 4px 4px 0;\r\n}\r\n\r\n.to-top {\r\n    position: fixed;\r\n    right: 16px;\r\n    bottom: 18px;\r\n    z-index: 60;\r\n    width: 46px;\r\n    height: 46px;\r\n    display: grid;\r\n    place-items: center;\r\n    border: 0;\r\n    border-radius: 50%;\r\n    color: #fff;\r\n    font-size: 15px;\r\n    background: linear-gradient(135deg, var(--blue-deep), var(--sky));\r\n    box-shadow: 0 10px 22px rgba(28, 95, 192, 0.35);\r\n    cursor: pointer;\r\n    opacity: 0;\r\n    pointer-events: none;\r\n    transform: translateY(14px) scale(0.9);\r\n    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);\r\n}\r\n\r\n.to-top.is-show {\r\n    opacity: 1;\r\n    pointer-events: auto;\r\n    transform: none;\r\n}\r\n\r\n.to-top:active {\r\n    transform: scale(0.94);\r\n}\r\n\r\n/* ================= REVEAL ON SCROLL ================= */\r\n.js .reveal {\r\n    opacity: 0;\r\n    transform: translateY(18px);\r\n    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);\r\n}\r\n\r\n.js .reveal.is-in {\r\n    opacity: 1;\r\n    transform: none;\r\n}\r\n\r\n/* ================= CARD ================= */\r\n.card {\r\n    width: 100%;\r\n    overflow: hidden;\r\n    text-align: center;\r\n    border-radius: var(--r-card);\r\n    background: #fff;\r\n    border: 1px solid rgba(220, 230, 243, 0.9);\r\n    box-shadow:\r\n        0 22px 50px rgba(28, 95, 192, 0.16),\r\n        0 2px 6px rgba(10, 37, 64, 0.06);\r\n}\r\n\r\n/* ================= HERO ================= */\r\n.hero {\r\n    position: relative;\r\n    min-height: 168px;\r\n    padding: 18px 20px 70px;\r\n    color: #fff;\r\n    background: linear-gradient(135deg, #1c5fc0 0%, #2878df 45%, #4b9cff 100%);\r\n    border-radius: 0 0 50% 50% / 0 0 36px 36px;\r\n    overflow: hidden;\r\n}\r\n\r\n.hero__art {\r\n    position: absolute;\r\n    inset: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    pointer-events: none;\r\n}\r\n\r\n.orb--1 { fill: rgba(255, 255, 255, 0.1); }\r\n.orb--2 { fill: rgba(255, 255, 255, 0.07); }\r\n\r\n.route {\r\n    fill: none;\r\n    stroke: rgba(255, 255, 255, 0.55);\r\n    stroke-width: 1.6;\r\n    stroke-dasharray: 3 7;\r\n    stroke-linecap: round;\r\n}\r\n\r\n.plane {\r\n    fill: #fff;\r\n    filter: drop-shadow(0 3px 4px rgba(10, 37, 64, 0.3));\r\n}\r\n\r\n.plane__fold {\r\n    fill: rgba(28, 95, 192, 0.28);\r\n}\r\n\r\n.top {\r\n    position: relative;\r\n    z-index: 1;\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n}\r\n\r\n.brand-logo {\r\n    width: 44px;\r\n    height: 44px;\r\n    flex-shrink: 0;\r\n    border-radius: 50%;\r\n    overflow: hidden;\r\n    border: 2px solid rgba(255, 255, 255, 0.85);\r\n    background: #fff;\r\n}\r\n\r\n.brand-logo img {\r\n    width: 100%;\r\n    height: 100%;\r\n    display: block;\r\n    object-fit: cover;\r\n}\r\n\r\n.top p {\r\n    padding: 6px 13px;\r\n    border-radius: 999px;\r\n    background: rgba(255, 255, 255, 0.18);\r\n    border: 1px solid rgba(255, 255, 255, 0.3);\r\n    font-size: 12px;\r\n    font-weight: 600;\r\n    letter-spacing: 0.06em;\r\n    color: #fff;\r\n}\r\n\r\n/* ================= IDENTITY ================= */\r\n.identity {\r\n    position: relative;\r\n    margin-top: -48px;\r\n    padding: 0 22px 8px;\r\n}\r\n\r\n.profile {\r\n    width: 98px;\r\n    height: 98px;\r\n    margin: 0 auto 14px;\r\n    padding: 4px;\r\n    border-radius: 50%;\r\n    background: linear-gradient(135deg, var(--sky), var(--blue-deep));\r\n    box-shadow: 0 12px 26px rgba(28, 95, 192, 0.32);\r\n    animation: pop 0.75s var(--ease) 0.1s both;\r\n}\r\n\r\n.profile img {\r\n    width: 100%;\r\n    height: 100%;\r\n    display: block;\r\n    object-fit: cover;\r\n    border-radius: 50%;\r\n    border: 3px solid #fff;\r\n    background: #fff;\r\n}\r\n\r\nh1 {\r\n    font-size: 27px;\r\n    font-weight: 800;\r\n    letter-spacing: -0.02em;\r\n    line-height: 1.15;\r\n    color: var(--navy);\r\n    overflow-wrap: anywhere;\r\n    animation: rise 0.6s var(--ease) 0.35s both;\r\n}\r\n\r\n.role {\r\n    margin-top: 6px;\r\n    font-size: 15px;\r\n    font-weight: 600;\r\n    color: var(--blue);\r\n    animation: rise 0.6s var(--ease) 0.45s both;\r\n}\r\n\r\n.bio {\r\n    max-width: 36ch;\r\n    margin: 14px auto 0;\r\n    font-size: 14.5px;\r\n    line-height: 1.7;\r\n    color: var(--muted);\r\n    animation: rise 0.6s var(--ease) 0.55s both;\r\n}\r\n\r\n@keyframes pop {\r\n    0%   { opacity: 0; transform: scale(0.6); }\r\n    70%  { opacity: 1; transform: scale(1.06); }\r\n    100% { opacity: 1; transform: scale(1); }\r\n}\r\n\r\n@keyframes rise {\r\n    from { opacity: 0; transform: translateY(12px); }\r\n    to   { opacity: 1; transform: none; }\r\n}\r\n\r\n/* ================= ACTION BUTTONS ================= */\r\n.action-buttons {\r\n    display: grid;\r\n    grid-template-columns: repeat(2, minmax(0, 1fr));\r\n    gap: 10px;\r\n    margin-top: 22px;\r\n    animation: rise 0.6s var(--ease) 0.65s both;\r\n}\r\n\r\n.action-btn {\r\n    min-width: 0;\r\n    min-height: 50px;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    gap: 8px;\r\n    padding: 10px 8px;\r\n    border-radius: var(--r-field);\r\n    font-size: 13.5px;\r\n    font-weight: 700;\r\n    text-decoration: none;\r\n    cursor: pointer;\r\n    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);\r\n}\r\n\r\n.action-btn:hover { transform: translateY(-2px); }\r\n.action-btn:active { transform: scale(0.98); }\r\n\r\n.save-btn {\r\n    color: #fff;\r\n    border: 0;\r\n    background: linear-gradient(120deg, var(--blue-deep), var(--sky));\r\n    box-shadow: 0 10px 20px rgba(40, 120, 223, 0.32);\r\n}\r\n\r\n.location-btn {\r\n    color: var(--blue-deep);\r\n    background: #fff;\r\n    border: 1.5px solid #cbdcf2;\r\n}\r\n\r\n.location-btn:hover { box-shadow: 0 8px 18px rgba(40, 120, 223, 0.16); }\r\n\r\n.feedback-jump {\r\n    grid-column: 1 / -1;\r\n    color: var(--blue-deep);\r\n    background: var(--ice);\r\n    border: 1.5px solid #cbdcf2;\r\n}\r\n\r\n.feedback-jump i { color: var(--sun); }\r\n\r\n/* ================= DIVIDER ================= */\r\n.line {\r\n    margin: 24px 22px 0;\r\n    border-top: 2px dashed var(--line);\r\n}\r\n\r\n/* ================= BLOCKS + TITLES ================= */\r\n.block {\r\n    padding: 24px 18px 0;\r\n}\r\n\r\n.block__title {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 10px;\r\n    margin-bottom: 14px;\r\n    padding: 0 4px;\r\n    font-size: 17px;\r\n    font-weight: 800;\r\n    letter-spacing: -0.01em;\r\n    text-align: left;\r\n    color: var(--navy);\r\n}\r\n\r\n.block__title i {\r\n    width: 30px;\r\n    height: 30px;\r\n    flex-shrink: 0;\r\n    display: grid;\r\n    place-items: center;\r\n    border-radius: 10px;\r\n    font-size: 13px;\r\n    color: #fff;\r\n    background: linear-gradient(135deg, var(--blue), var(--sky));\r\n}\r\n\r\n/* ================= TILES (social + save/share) ================= */\r\n.tiles {\r\n    display: grid;\r\n    grid-template-columns: repeat(4, minmax(0, 1fr));\r\n    gap: 6px;\r\n}\r\n\r\n.tile {\r\n    min-width: 0;\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    gap: 9px;\r\n    padding: 12px 2px 10px;\r\n    border: 0;\r\n    border-radius: var(--r-tile);\r\n    background: transparent;\r\n    color: var(--ink);\r\n    font-size: 12px;\r\n    font-weight: 600;\r\n    line-height: 1.3;\r\n    text-align: center;\r\n    text-decoration: none;\r\n    cursor: pointer;\r\n    transition: transform 0.25s var(--ease), background 0.25s;\r\n}\r\n\r\n.tile:hover {\r\n    background: var(--ice);\r\n    transform: translateY(-3px);\r\n}\r\n\r\n.tile:active { transform: scale(0.96); }\r\n\r\n.tile__icon {\r\n    width: 56px;\r\n    height: 56px;\r\n    display: grid;\r\n    place-items: center;\r\n    border-radius: var(--r-tile);\r\n    color: #fff;\r\n    font-size: 24px;\r\n    box-shadow: 0 8px 16px rgba(23, 36, 59, 0.18);\r\n    transition: background 0.25s, color 0.25s;\r\n}\r\n\r\n.tile--instagram .tile__icon { background: linear-gradient(45deg, #f9a03f, #e1306c 55%, #a830c4); }\r\n.tile--facebook  .tile__icon { background: #1877f2; }\r\n.tile--linkedin  .tile__icon { background: #0a66c2; }\r\n.tile--whatsapp  .tile__icon { background: #25d366; }\r\n\r\n.tile--tool .tile__icon {\r\n    font-size: 21px;\r\n    color: var(--blue);\r\n    background: var(--ice);\r\n    box-shadow: inset 0 0 0 1.5px #cfe0f6;\r\n}\r\n\r\n.tile--tool:hover .tile__icon {\r\n    color: #fff;\r\n    background: var(--blue);\r\n}\r\n\r\n/* ================= ABOUT ME ================= */\r\n.about-me {\r\n    margin: 24px 18px 0;\r\n    padding: 18px;\r\n    text-align: left;\r\n    background: var(--mist);\r\n    border: 1px solid var(--line);\r\n    border-radius: var(--r-tile);\r\n}\r\n\r\n.about-me .block__title {\r\n    padding: 0;\r\n    margin-bottom: 10px;\r\n}\r\n\r\n.about-me p {\r\n    font-size: 14.5px;\r\n    line-height: 1.7;\r\n    color: var(--muted);\r\n}\r\n\r\n/* ================= INFO BOXES ================= */\r\n.info-boxes {\r\n    display: grid;\r\n    grid-template-columns: repeat(3, minmax(0, 1fr));\r\n    gap: 8px;\r\n    margin: 16px 18px 22px;\r\n}\r\n\r\n.info-box {\r\n    min-width: 0;\r\n    padding: 16px 6px 14px;\r\n    border-radius: 16px;\r\n    border: 1px solid var(--line);\r\n    background: linear-gradient(160deg, #fff, #eef5ff);\r\n}\r\n\r\n.info-icon {\r\n    width: 38px;\r\n    height: 38px;\r\n    margin: 0 auto 10px;\r\n    display: grid;\r\n    place-items: center;\r\n    border-radius: 50%;\r\n    font-size: 16px;\r\n    color: var(--blue);\r\n    background: var(--ice);\r\n}\r\n\r\n.smile-box .info-icon {\r\n    color: #c98100;\r\n    background: #fff1d1;\r\n}\r\n\r\n.info-number {\r\n    font-size: 15px;\r\n    font-weight: 800;\r\n    line-height: 1.25;\r\n    color: var(--navy);\r\n    overflow-wrap: anywhere;\r\n}\r\n\r\n.info-label {\r\n    margin-top: 4px;\r\n    font-size: 12px;\r\n    color: var(--muted);\r\n}\r\n\r\n/* ================= FEEDBACK CARD ================= */\r\n.feedback-heading {\r\n    padding: 28px 22px 44px;\r\n    color: #fff;\r\n    background: linear-gradient(135deg, #1c5fc0 0%, #2878df 50%, #4b9cff 100%);\r\n    border-radius: 0 0 50% 50% / 0 0 30px 30px;\r\n}\r\n\r\n.feedback-heading h2 {\r\n    font-size: 23px;\r\n    font-weight: 800;\r\n    letter-spacing: -0.02em;\r\n    margin-bottom: 6px;\r\n}\r\n\r\n.feedback-heading p {\r\n    font-size: 13.5px;\r\n    line-height: 1.5;\r\n    color: rgba(255, 255, 255, 0.88);\r\n}\r\n\r\n#feedbackForm {\r\n    padding: 24px 22px 0;\r\n    text-align: left;\r\n}\r\n\r\n.rating-label {\r\n    margin-bottom: 10px;\r\n    font-size: 13.5px;\r\n    font-weight: 700;\r\n    color: var(--navy);\r\n}\r\n\r\n.optional {\r\n    font-size: 12px;\r\n    font-weight: 500;\r\n    color: #8795a9;\r\n}\r\n\r\n/* ---------- stars ---------- */\r\n.star-rating {\r\n    display: flex;\r\n    justify-content: center;\r\n    gap: 6px;\r\n    margin: 4px 0;\r\n}\r\n\r\n.star {\r\n    padding: 0 2px;\r\n    border: 0;\r\n    background: transparent;\r\n    color: #d5deeb;\r\n    font-size: 40px;\r\n    line-height: 1;\r\n    cursor: pointer;\r\n    transition: transform 0.2s var(--ease), color 0.2s;\r\n}\r\n\r\n.star:hover { transform: scale(1.15); }\r\n\r\n.star.active {\r\n    color: var(--sun);\r\n    animation: starPop 0.35s var(--ease);\r\n}\r\n\r\n@keyframes starPop {\r\n    0%   { transform: scale(0.7); }\r\n    60%  { transform: scale(1.25); }\r\n    100% { transform: scale(1); }\r\n}\r\n\r\n.rating-hint {\r\n    margin: 8px 0 22px;\r\n    text-align: center;\r\n    font-size: 12.5px;\r\n    color: var(--muted);\r\n}\r\n\r\n/* ---------- chips ---------- */\r\n.suggestion-group {\r\n    margin: 20px 0;\r\n}\r\n\r\n.suggestion-chips {\r\n    display: grid;\r\n    grid-template-columns: repeat(2, minmax(0, 1fr));\r\n    gap: 8px;\r\n}\r\n\r\n.suggestion-chip {\r\n    position: relative;\r\n    min-width: 0;\r\n    display: flex;\r\n    cursor: pointer;\r\n}\r\n\r\n.suggestion-chip input[type="checkbox"] {\r\n    position: absolute;\r\n    width: 1px;\r\n    height: 1px;\r\n    opacity: 0;\r\n    overflow: hidden;\r\n}\r\n\r\n.suggestion-chip span {\r\n    width: 100%;\r\n    min-height: 42px;\r\n    display: flex;\r\n    align-items: center;\r\n    padding: 8px 12px;\r\n    border: 1.5px solid var(--line);\r\n    border-radius: var(--r-field);\r\n    background: var(--mist);\r\n    color: #40516b;\r\n    font-size: 12.5px;\r\n    font-weight: 500;\r\n    line-height: 1.35;\r\n    overflow-wrap: anywhere;\r\n    transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s var(--ease);\r\n}\r\n\r\n.suggestion-chip:active span { transform: scale(0.97); }\r\n\r\n.suggestion-chip input:checked + span {\r\n    color: #fff;\r\n    font-weight: 600;\r\n    border-color: var(--blue);\r\n    background: linear-gradient(120deg, var(--blue-deep), var(--sky));\r\n}\r\n\r\n.suggestion-chip.improvement input:checked + span {\r\n    color: #7a4d00;\r\n    border-color: var(--sun);\r\n    background: #fff1d1;\r\n}\r\n\r\n.suggestion-chip:focus-within span {\r\n    outline: 3px solid rgba(40, 120, 223, 0.4);\r\n    outline-offset: 2px;\r\n}\r\n\r\n/* ---------- fields ---------- */\r\n.review-label {\r\n    display: block;\r\n    margin: 18px 0 8px;\r\n    font-size: 13.5px;\r\n    font-weight: 700;\r\n    color: var(--navy);\r\n}\r\n\r\n#feedbackForm textarea,\r\n#feedbackForm input[type="text"] {\r\n    display: block;\r\n    width: 100%;\r\n    min-width: 0;\r\n    padding: 13px 14px;\r\n    border: 1.5px solid var(--line);\r\n    border-radius: var(--r-field);\r\n    background: #fbfdff;\r\n    color: var(--ink);\r\n    font-size: 14px;\r\n    outline: none;\r\n    transition: border-color 0.2s, box-shadow 0.2s;\r\n}\r\n\r\n#feedbackForm textarea {\r\n    min-height: 110px;\r\n    resize: vertical;\r\n    line-height: 1.6;\r\n}\r\n\r\n#feedbackForm textarea:focus,\r\n#feedbackForm input[type="text"]:focus {\r\n    border-color: var(--blue);\r\n    box-shadow: 0 0 0 4px rgba(40, 120, 223, 0.14);\r\n}\r\n\r\n.submit-review {\r\n    width: 100%;\r\n    min-height: 52px;\r\n    margin-top: 20px;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    gap: 9px;\r\n    border: 0;\r\n    border-radius: var(--r-field);\r\n    color: #fff;\r\n    background: linear-gradient(120deg, var(--blue-deep), var(--sky));\r\n    font-size: 15px;\r\n    font-weight: 700;\r\n    cursor: pointer;\r\n    box-shadow: 0 12px 24px rgba(40, 120, 223, 0.32);\r\n    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);\r\n}\r\n\r\n.submit-review:hover { transform: translateY(-2px); }\r\n.submit-review:active { transform: scale(0.98); }\r\n\r\n.feedback-status {\r\n    min-height: 20px;\r\n    margin-top: 12px;\r\n    text-align: center;\r\n    font-size: 12.5px;\r\n    font-weight: 500;\r\n    color: var(--ok);\r\n    overflow-wrap: anywhere;\r\n}\r\n\r\n/* ---------- recent feedback ---------- */\r\n.recent-feedback {\r\n    margin: 22px 22px 26px;\r\n    padding-top: 20px;\r\n    text-align: left;\r\n    border-top: 2px dashed var(--line);\r\n}\r\n\r\n.recent-heading {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    gap: 10px;\r\n    margin-bottom: 12px;\r\n}\r\n\r\n.recent-heading h3 {\r\n    font-size: 16px;\r\n    font-weight: 800;\r\n    color: var(--navy);\r\n}\r\n\r\n.local-note {\r\n    font-size: 11.5px;\r\n    text-align: right;\r\n    color: #8795a9;\r\n}\r\n\r\n.review-list {\r\n    display: grid;\r\n    gap: 10px;\r\n}\r\n\r\n.empty-reviews {\r\n    padding: 16px 5px;\r\n    text-align: center;\r\n    font-size: 13px;\r\n    color: #8795a9;\r\n}\r\n\r\n.review-card {\r\n    padding: 14px;\r\n    border: 1px solid var(--line);\r\n    border-radius: var(--r-field);\r\n    background: var(--mist);\r\n    animation: rise 0.45s var(--ease) both;\r\n}\r\n\r\n.review-card-top {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: flex-start;\r\n    gap: 8px;\r\n    margin-bottom: 7px;\r\n}\r\n\r\n.review-author {\r\n    font-size: 13px;\r\n    font-weight: 700;\r\n    color: var(--navy);\r\n    overflow-wrap: anywhere;\r\n}\r\n\r\n.review-stars {\r\n    font-size: 13px;\r\n    letter-spacing: 1px;\r\n    white-space: nowrap;\r\n    color: var(--sun);\r\n}\r\n\r\n.review-copy {\r\n    font-size: 13px;\r\n    line-height: 1.6;\r\n    color: #52627a;\r\n    overflow-wrap: anywhere;\r\n}\r\n\r\n.review-date {\r\n    margin-top: 8px;\r\n    font-size: 11.5px;\r\n    color: #8795a9;\r\n}\r\n\r\n/* ================= POPUP + TOAST ================= */\r\n.qmodal {\r\n    position: fixed;\r\n    inset: 0;\r\n    z-index: 1000;\r\n    display: grid;\r\n    place-items: center;\r\n    padding: 16px;\r\n    background: rgba(10, 37, 64, 0.6);\r\n    -webkit-backdrop-filter: blur(4px);\r\n    backdrop-filter: blur(4px);\r\n}\r\n\r\n.qmodal[hidden] { display: none; }\r\n\r\n.qmodal__box {\r\n    position: relative;\r\n    width: min(380px, 100%);\r\n    max-height: 88vh;\r\n    overflow-y: auto;\r\n    padding: 26px 24px 24px;\r\n    border-radius: var(--r-card);\r\n    background: #fff;\r\n    color: var(--ink);\r\n    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);\r\n    animation: pop 0.35s var(--ease) both;\r\n}\r\n\r\n.qmodal__box h3 {\r\n    margin-bottom: 12px;\r\n    padding-right: 30px;\r\n    font-size: 18px;\r\n    font-weight: 800;\r\n    color: var(--navy);\r\n}\r\n\r\n.qmodal__box p {\r\n    margin: 0 0 14px;\r\n    font-size: 14px;\r\n    line-height: 1.6;\r\n    color: var(--muted);\r\n}\r\n\r\n.qmodal__close {\r\n    position: absolute;\r\n    top: 10px;\r\n    right: 14px;\r\n    border: 0;\r\n    background: none;\r\n    color: #8795a9;\r\n    font-size: 28px;\r\n    line-height: 1;\r\n    cursor: pointer;\r\n}\r\n\r\n.qmodal__center { text-align: center; }\r\n\r\n.qmodal__center img {\r\n    display: block;\r\n    margin: 0 auto 12px;\r\n    border-radius: var(--r-field);\r\n    border: 1px solid var(--line);\r\n}\r\n\r\n.qbtn {\r\n    display: inline-block;\r\n    padding: 11px 20px;\r\n    border-radius: 999px;\r\n    color: #fff;\r\n    background: linear-gradient(120deg, var(--blue-deep), var(--sky));\r\n    font-size: 13.5px;\r\n    font-weight: 700;\r\n    text-decoration: none;\r\n}\r\n\r\n.qtoast {\r\n    position: fixed;\r\n    left: 50%;\r\n    bottom: 24px;\r\n    z-index: 1100;\r\n    padding: 11px 22px;\r\n    border-radius: 999px;\r\n    background: var(--navy);\r\n    color: #fff;\r\n    font-size: 13px;\r\n    font-weight: 600;\r\n    opacity: 0;\r\n    pointer-events: none;\r\n    transform: translate(-50%, 20px);\r\n    transition: opacity 0.25s, transform 0.25s var(--ease);\r\n}\r\n\r\n.qtoast.is-show {\r\n    opacity: 1;\r\n    transform: translate(-50%, 0);\r\n}\r\n\r\n/* ================= SMALL SCREENS ================= */\r\n@media (max-width: 380px) {\r\n    .page { padding: 14px 10px 56px; }\r\n\r\n    .tile__icon { width: 50px; height: 50px; font-size: 22px; }\r\n    .tile { font-size: 11.5px; }\r\n\r\n    .block { padding-left: 12px; padding-right: 12px; }\r\n    .about-me,\r\n    .info-boxes { margin-left: 12px; margin-right: 12px; }\r\n\r\n    #feedbackForm { padding-left: 16px; padding-right: 16px; }\r\n    .recent-feedback { margin-left: 16px; margin-right: 16px; }\r\n\r\n    .suggestion-chip span { padding: 8px 9px; font-size: 12px; }\r\n    .star { font-size: 35px; }\r\n    .info-number { font-size: 14px; }\r\n}\r\n\r\n/* ================= REDUCED MOTION ================= */\r\n@media (prefers-reduced-motion: reduce) {\r\n    html { scroll-behavior: auto; }\r\n\r\n    .js .reveal {\r\n        opacity: 1;\r\n        transform: none;\r\n    }\r\n\r\n    *,\r\n    *::before,\r\n    *::after {\r\n        animation: none !important;\r\n        transition-duration: 0.01ms !important;\r\n    }\r\n}',
+        "script.js":
+          'console.log("Uravi Holidays script loaded");\n\n// ================= PROFILE DETAILS =================\nconst CFG = window.CARD || {};\nconst userName = CFG.name || "Uravi Holidays";\n\nconst nameParts = userName.trim().split(/\\s+/).filter(Boolean);\n\nconst initials = nameParts.length > 1\n    ? (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase()\n    : (nameParts[0] || "U").slice(0, 2).toUpperCase();\n\nconst profileName = document.getElementById("profileName");\n\nif (profileName) {\n    profileName.textContent = userName;\n}\n\n\n// ================= GOOGLE MAPS LOCATION =================\nconst MAP_URL = CFG.mapUrl || "https://maps.app.goo.gl/xikMJF9QvYEE35hi8";\nconst CALL_NUMBER = CFG.phone || "+918766043591";\n\nfunction getLocation() {\n    window.open(MAP_URL, "_blank", "noopener,noreferrer");\n}\n\n\n// ================= WHATSAPP CONTACT =================\nconst whatsappNumber = String(CFG.whatsapp ?? "98329056457").replace(/\\D/g, "");\n\nconst whatsappMessage =\n    CFG.waMessage || "Hello! \ud83d\udc4b I\'m interested in your travel packages. Please share the available holiday packages and pricing. \u2708\ufe0f\ud83c\udf0d";\n\nconst whatsappLink = document.getElementById("whatsappLink");\n\nif (whatsappLink) {\n    whatsappLink.href =\n        `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;\n\n    whatsappLink.target = "_blank";\n    whatsappLink.rel = "noopener noreferrer";\n}\n\n\n// ================= FEEDBACK SYSTEM =================\n(() => {\n    const form = document.getElementById("feedbackForm");\n\n    if (!form) {\n        console.error("Feedback form not found.");\n        return;\n    }\n\n    const stars = [...form.querySelectorAll(".star")];\n    const ratingHint = document.getElementById("ratingHint");\n    const reviewText = document.getElementById("reviewText");\n    const reviewerName = document.getElementById("reviewerName");\n    const status = document.getElementById("feedbackStatus");\n    const reviewList = document.getElementById("reviewList");\n\n    const storageKey = "uraviHolidaysReviews";\n\n    // ================= GOOGLE REVIEW SETTINGS (EDIT HERE) =================\n    // Paste your OFFICIAL Google review link between the quotes below.\n    // Get it from your Google Business Profile:\n    //   Business Profile > "Get more reviews" (or "Ask for reviews") > Copy link\n    // It normally looks like:  https://g.page/r/XXXXXXXXXXXX/review\n    // If this is empty or not a valid review link, the site opens your\n    // Google Maps listing instead, and the customer must tap "Write a review".\n    const GOOGLE_REVIEW_URL = CFG.googleReview || "https://g.page/r/CXPe05M9jvHUEAE/review";\n\n    // Fallback only: your ordinary Google Maps listing page.\n    // This does NOT open the review form by itself.\n    const GOOGLE_LISTING_URL =\n        CFG.googleListing || "https://www.google.com/maps/place/URAVI+HoLidays/@21.1427793,79.0859763,17z/data=!4m8!3m7!1s0x3bd4c10d0963e1ff:0xd4f18e3d93d3de73!8m2!3d21.1427793!4d79.0859763!9m1!1b1!16s%2Fg%2F11p20x75bp";\n\n    // Only these hosts are accepted, so a typo can never send customers elsewhere.\n    const ALLOWED_GOOGLE_HOSTS = [\n        "g.page",\n        "search.google.com",\n        "www.google.com",\n        "google.com",\n        "maps.app.goo.gl",\n        "goo.gl"\n    ];\n\n    let selectedRating = 0;\n    let reviewWasEdited = false;\n\n    const ratingWords = {\n        1: "poor",\n        2: "fair",\n        3: "good",\n        4: "very good",\n        5: "excellent"\n    };\n\n\n    // ---------- STATUS MESSAGE ----------\n    function showStatus(message, color = "#b45309") {\n        if (status) {\n            status.textContent = message;\n            status.style.color = color;\n        }\n    }\n\n\n    // ---------- STAR RATING ----------\n    function updateStars(rating) {\n        selectedRating = rating;\n\n        stars.forEach((star) => {\n            const starRating = Number(star.dataset.rating);\n            const active = starRating <= rating;\n\n            star.classList.toggle("active", active);\n            star.setAttribute(\n                "aria-pressed",\n                String(starRating === rating)\n            );\n        });\n\n        if (ratingHint) {\n            ratingHint.textContent = rating\n                ? `${rating} out of 5 stars \u2014 ${ratingWords[rating]}`\n                : "Tap a star to rate us";\n        }\n\n        generateSentence();\n    }\n\n\n    // ---------- SELECTED SUGGESTIONS ----------\n    function selectedValues(name) {\n        return [\n            ...form.querySelectorAll(\n                `input[name="${name}"]:checked`\n            )\n        ].map((input) => input.value);\n    }\n\n\n    // ---------- GENERATE REVIEW TEXT ----------\n    function generateSentence() {\n        if (!reviewText || reviewWasEdited) return;\n\n        const positives = selectedValues("positive");\n        const improvements = selectedValues("improvement");\n        const parts = [];\n\n        if (selectedRating) {\n            parts.push(\n                `My experience with ${userName} was ${ratingWords[selectedRating]}`\n            );\n        } else if (positives.length) {\n            parts.push(\n                `My experience with ${userName} was enjoyable`\n            );\n        }\n\n        if (positives.length) {\n            const list = positives.length === 1\n                ? positives[0]\n                : positives.slice(0, -1).join(", ") +\n                  " and " +\n                  positives[positives.length - 1];\n\n            parts.push(`I especially appreciated the ${list}`);\n        }\n\n        let sentence = parts.length\n            ? parts.join(". ") + "."\n            : "";\n\n        if (improvements.length) {\n            sentence += (sentence ? " " : "") +\n                `I would appreciate ${improvements.join(" and ")} in the future.`;\n        }\n\n        reviewText.value = sentence;\n    }\n\n\n    // ---------- STAR CLICK EVENTS ----------\n    stars.forEach((star) => {\n        star.addEventListener("click", () => {\n            const rating = Number(star.dataset.rating);\n\n            if (rating < 1 || rating > 5) return;\n\n            reviewWasEdited = false;\n            updateStars(rating);\n        });\n    });\n\n\n    // ---------- SUGGESTION CHECKBOXES ----------\n    form.querySelectorAll(\'input[type="checkbox"]\').forEach((input) => {\n        input.addEventListener("change", () => {\n            reviewWasEdited = false;\n            generateSentence();\n        });\n    });\n\n\n    // ---------- MANUAL REVIEW EDITING ----------\n    if (reviewText) {\n        reviewText.addEventListener("input", () => {\n            reviewWasEdited = true;\n        });\n    }\n\n\n    // ---------- READ LOCAL REVIEWS ----------\n    function getReviews() {\n        try {\n            const value = JSON.parse(\n                localStorage.getItem(storageKey) || "[]"\n            );\n\n            return Array.isArray(value) ? value : [];\n        } catch (error) {\n            console.error("Unable to read saved reviews:", error);\n            return [];\n        }\n    }\n\n\n    // ---------- ESCAPE HTML ----------\n    function escapeHTML(value) {\n        return String(value ?? "").replace(/[&<>"\']/g, (char) => ({\n            "&": "&amp;",\n            "<": "&lt;",\n            ">": "&gt;",\n            \'"\': "&quot;",\n            "\'": "&#39;"\n        })[char]);\n    }\n\n\n    // ---------- DISPLAY LOCAL REVIEWS ----------\n    function renderReviews() {\n        if (!reviewList) return;\n\n        const reviews = getReviews();\n\n        if (!reviews.length) {\n            reviewList.innerHTML =\n                \'<p class="empty-reviews">Your feedback will appear here after submission.<\/p>\';\n            return;\n        }\n\n        reviewList.innerHTML = reviews.slice(0, 5).map((review) => {\n            const safeName = escapeHTML(review.name || "Guest");\n            const safeText = escapeHTML(review.text);\n\n            const rating = Math.max(\n                0,\n                Math.min(5, Number(review.rating) || 0)\n            );\n\n            const starsText =\n                "\u2605".repeat(rating) + "\u2606".repeat(5 - rating);\n\n            const date = new Date(review.date);\n\n            const dateText = Number.isNaN(date.getTime())\n                ? ""\n                : date.toLocaleDateString();\n\n            return `\n                <article class="review-card">\n                    <div class="review-card-top">\n                        <span class="review-author">${safeName}<\/span>\n                        <span class="review-stars"\n                              aria-label="${rating} out of 5 stars">\n                            ${starsText}\n                        <\/span>\n                    <\/div>\n                    <p class="review-copy">${safeText}<\/p>\n                    <p class="review-date">${dateText}<\/p>\n                <\/article>\n            `;\n        }).join("");\n    }\n\n\n    // ---------- GOOGLE DESTINATION ----------\n    function parseGoogleUrl(value) {\n        if (typeof value !== "string" || !value.trim()) return null;\n\n        try {\n            const url = new URL(value.trim());\n\n            if (\n                url.protocol !== "https:" ||\n                !ALLOWED_GOOGLE_HOSTS.includes(url.hostname)\n            ) {\n                return null;\n            }\n\n            return url;\n        } catch (error) {\n            return null;\n        }\n    }\n\n    // A "dedicated" link is one of Google\'s official review-form formats.\n    function isDedicatedReviewUrl(url) {\n        if (!url) return false;\n\n        const isGooglePageLink =\n            url.hostname === "g.page" &&\n            /^\\/r\\/[^/]+\\/review\\/?$/.test(url.pathname);\n\n        const isWriteReviewLink =\n            url.hostname === "search.google.com" &&\n            url.pathname === "/local/writereview" &&\n            Boolean(url.searchParams.get("placeid"));\n\n        return isGooglePageLink || isWriteReviewLink;\n    }\n\n    function resolveGoogleDestination() {\n        const reviewUrl = parseGoogleUrl(GOOGLE_REVIEW_URL);\n\n        if (reviewUrl && isDedicatedReviewUrl(reviewUrl)) {\n            return { href: reviewUrl.href, dedicated: true };\n        }\n\n        if (GOOGLE_REVIEW_URL.trim()) {\n            console.warn(\n                "GOOGLE_REVIEW_URL is not a recognised Google review link. " +\n                "Expected https://g.page/r/.../review. Using the listing page instead."\n            );\n        }\n\n        const listingUrl = parseGoogleUrl(GOOGLE_LISTING_URL);\n\n        return listingUrl\n            ? { href: listingUrl.href, dedicated: false }\n            : null;\n    }\n\n\n    // ---------- COPY REVIEW TEXT ----------\n    function legacyCopy(text) {\n        const helper = document.createElement("textarea");\n\n        helper.value = text;\n        helper.setAttribute("readonly", "");\n        helper.style.position = "fixed";\n        helper.style.top = "0";\n        helper.style.left = "-9999px";\n        helper.style.opacity = "0";\n\n        document.body.appendChild(helper);\n\n        try {\n            helper.focus();\n            helper.select();\n            helper.setSelectionRange(0, text.length);\n\n            return document.execCommand("copy");\n        } finally {\n            document.body.removeChild(helper);\n        }\n    }\n\n    async function copyReviewText(text) {\n        // Modern clipboard API (needs HTTPS and may be blocked by the browser).\n        try {\n            if (navigator.clipboard?.writeText && window.isSecureContext) {\n                await Promise.race([\n                    navigator.clipboard.writeText(text),\n                    new Promise((_, reject) =>\n                        setTimeout(\n                            () => reject(new Error("Clipboard request timed out")),\n                            1500\n                        )\n                    )\n                ]);\n\n                return true;\n            }\n        } catch (error) {\n            console.warn("Clipboard API unavailable or blocked:", error);\n        }\n\n        // Older-browser fallback.\n        try {\n            return legacyCopy(text);\n        } catch (error) {\n            console.warn("Fallback copy failed:", error);\n            return false;\n        }\n    }\n\n\n    // ---------- SUBMIT FEEDBACK ----------\n    const submitButton = form.querySelector(\'button[type="submit"]\');\n\n    // Fallback buttons are created here in JavaScript (no HTML changes needed).\n    // They reuse the existing "submit-review" button style and stay hidden\n    // unless automatic copying fails.\n    function createFallbackButton(id, iconClass, label) {\n        const button = document.createElement("button");\n        const icon = document.createElement("i");\n\n        button.id = id;\n        button.type = "button";\n        button.className = "submit-review";\n\n        icon.className = iconClass;\n        icon.setAttribute("aria-hidden", "true");\n\n        button.appendChild(icon);\n        button.appendChild(document.createTextNode(" " + label));\n\n        return button;\n    }\n\n    const copyReviewBtn = createFallbackButton(\n        "copyReviewBtn",\n        "fa-solid fa-copy",\n        "Copy review"\n    );\n\n    const continueGoogleBtn = createFallbackButton(\n        "continueGoogleBtn",\n        "fa-brands fa-google",\n        "Continue to Google"\n    );\n\n    const fallbackPanel = document.createElement("div");\n\n    fallbackPanel.id = "reviewFallback";\n    fallbackPanel.hidden = true;\n    fallbackPanel.appendChild(copyReviewBtn);\n    fallbackPanel.appendChild(continueGoogleBtn);\n\n    if (status && status.parentNode) {\n        status.parentNode.insertBefore(fallbackPanel, status.nextSibling);\n    } else {\n        form.appendChild(fallbackPanel);\n    }\n\n    let isRedirecting = false;\n    let pending = null; // { text, destination } for the current submission\n\n    function setSubmitting(active) {\n        isRedirecting = active;\n\n        if (submitButton) {\n            submitButton.disabled = active;\n            submitButton.style.opacity = active ? "0.7" : "";\n        }\n\n        if (!active && fallbackPanel) {\n            fallbackPanel.hidden = true;\n        }\n    }\n\n    // ---------- OPEN GOOGLE ----------\n    function openGoogle(destination) {\n        try {\n            window.location.assign(destination.href);\n        } catch (error) {\n            console.error("Could not open Google:", error);\n            setSubmitting(false);\n            showStatus(\n                "Could not open Google automatically. Please search for Uravi Holidays on Google Maps to leave your review."\n            );\n        }\n    }\n\n    // ---------- FALLBACK BUTTONS (shown only if auto-copy fails) ----------\n    // A fresh tap counts as a user gesture, so copying usually works here.\n    if (copyReviewBtn) {\n        copyReviewBtn.addEventListener("click", async () => {\n            if (!pending) return;\n\n            const ok = await copyReviewText(pending.text);\n\n            if (ok) {\n                showStatus(\n                    "Review copied. Now tap Continue to Google and paste it there.",\n                    "#16734a"\n                );\n            } else {\n                if (reviewText) {\n                    reviewText.focus();\n                    reviewText.select();\n                }\n\n                showStatus(\n                    "Still could not copy. Press and hold your review text above and choose Copy, then tap Continue to Google."\n                );\n            }\n        });\n    }\n\n    if (continueGoogleBtn) {\n        continueGoogleBtn.addEventListener("click", () => {\n            if (pending) {\n                openGoogle(pending.destination);\n            }\n        });\n    }\n\n    // Re-enable the button if the customer returns with the Back button.\n    window.addEventListener("pageshow", (event) => {\n        if (event.persisted) {\n            setSubmitting(false);\n        }\n    });\n\n    if (!parseGoogleUrl(GOOGLE_REVIEW_URL)) {\n        console.warn(\n            "No official Google review link set. Edit GOOGLE_REVIEW_URL in script.js."\n        );\n    }\n\n    form.addEventListener("submit", async (event) => {\n        event.preventDefault();\n\n        if (isRedirecting) return;\n\n        // Validate star rating.\n        if (!selectedRating) {\n            showStatus("Please select a star rating first.");\n            return;\n        }\n\n        // Validate review text.\n        const text = reviewText\n            ? reviewText.value.trim()\n            : "";\n\n        if (!text) {\n            showStatus("Please select a suggestion or write your review.");\n\n            if (reviewText) {\n                reviewText.focus();\n            }\n\n            return;\n        }\n\n        // Check the destination before saving anything.\n        const destination = resolveGoogleDestination();\n\n        if (!destination) {\n            showStatus(\n                "Google review link is not configured correctly. Please contact us directly."\n            );\n            return;\n        }\n\n        setSubmitting(true);\n\n        // Create the feedback record.\n        const review = {\n            name: reviewerName?.value.trim() || "Guest",\n            rating: selectedRating,\n            text: text,\n            date: new Date().toISOString()\n        };\n\n        // Save feedback in this browser\'s local storage (this device only).\n        let savedLocally = false;\n\n        try {\n            const reviews = getReviews();\n\n            reviews.unshift(review);\n\n            localStorage.setItem(\n                storageKey,\n                JSON.stringify(reviews.slice(0, 30))\n            );\n\n            savedLocally = true;\n            renderReviews();\n        } catch (error) {\n            console.warn("Local review saving failed:", error);\n        }\n\n        // Try copying the review text for the customer.\n        const copied = await copyReviewText(text);\n\n        pending = { text, destination };\n\n        // Status message shown BEFORE leaving the page.\n        // Nothing has been posted to Google at this point.\n        const steps = destination.dedicated\n            ? "Google will open next. Sign in if asked, choose your stars, paste your text, and tap Post."\n            : "Google Maps will open next. Tap \\"Write a review\\", choose your stars, paste your text, and tap Post.";\n\n        const savedNote = savedLocally\n            ? ""\n            : " (This device could not save a local copy.)";\n\n        if (copied) {\n            showStatus(\n                `Your review text is copied. ${steps} It is not on Google until you post it there.${savedNote}`,\n                "#16734a"\n            );\n\n            // Give the customer time to read the message, then open Google.\n            setTimeout(() => openGoogle(destination), 2500);\n            return;\n        }\n\n        // Copy failed: do NOT redirect automatically. Let the customer copy\n        // the text first, then continue to Google themselves.\n        if (reviewText) {\n            reviewText.focus();\n            reviewText.select();\n        }\n\n        if (fallbackPanel) {\n            fallbackPanel.hidden = false;\n\n            showStatus(\n                `Could not copy automatically. Tap Copy review, then Continue to Google. It is not on Google until you post it there.${savedNote}`\n            );\n        } else {\n            // Panel missing from the HTML: fall back to a delayed redirect.\n            showStatus(\n                `Could not copy automatically, so your text is selected above. Please copy it now. ${steps}${savedNote}`\n            );\n\n            setTimeout(() => openGoogle(destination), 5000);\n        }\n    });\n\n\n    // ---------- INITIALIZE ----------\n    renderReviews();\n    updateStars(0);\n\n    console.log("Feedback system initialized successfully");\n})();\n\n\n// ================= SAVE & SHARE TOOLS =================\n(function () {\n    "use strict";\n\n    var tools = document.getElementById("tools");\n    var modal = document.getElementById("qmodal");\n    var modalTitle = document.getElementById("qmodalTitle");\n    var modalBody = document.getElementById("qmodalBody");\n    var modalClose = document.getElementById("qmodalClose");\n    var toastEl = document.getElementById("qtoast");\n\n    if (!tools || !modal) return;\n\n    function pageUrl() {\n        return location.href.split("#")[0];\n    }\n\n    function toast(msg) {\n        if (!toastEl) return;\n\n        toastEl.textContent = msg;\n        toastEl.classList.add("is-show");\n\n        clearTimeout(toast.t);\n\n        toast.t = setTimeout(function () {\n            toastEl.classList.remove("is-show");\n        }, 2200);\n    }\n\n    function copyText(text) {\n        if (navigator.clipboard && window.isSecureContext) {\n            return navigator.clipboard.writeText(text);\n        }\n\n        return new Promise(function (resolve, reject) {\n            var ta = document.createElement("textarea");\n\n            ta.value = text;\n            ta.style.position = "fixed";\n            ta.style.opacity = "0";\n\n            document.body.appendChild(ta);\n            ta.select();\n\n            var ok = false;\n\n            try {\n                ok = document.execCommand("copy");\n            } catch (e) {}\n\n            document.body.removeChild(ta);\n\n            ok ? resolve() : reject();\n        });\n    }\n\n    // ---------- MODAL ----------\n    function openModal(title, html) {\n        modalTitle.textContent = title;\n        modalBody.innerHTML = html;\n        modal.hidden = false;\n        document.body.style.overflow = "hidden";\n\n        modalClose?.focus({ preventScroll: true });\n    }\n\n    function closeModal() {\n        modal.hidden = true;\n        document.body.style.overflow = "";\n    }\n\n    if (modalClose) {\n        modalClose.addEventListener("click", closeModal);\n    }\n\n    modal.addEventListener("click", function (e) {\n        if (e.target === modal) closeModal();\n    });\n\n    document.addEventListener("keydown", function (e) {\n        if (e.key === "Escape" && !modal.hidden) {\n            closeModal();\n        }\n    });\n\n    // ---------- SHARE ----------\n    function share() {\n        var data = {\n            title: userName,\n            text: "Check out " + userName + " \u2013 your trusted travel partner",\n            url: pageUrl()\n        };\n\n        if (navigator.share) {\n            navigator.share(data).catch(function () {});\n        } else {\n            copyLink();\n        }\n    }\n\n    function copyLink() {\n        copyText(pageUrl()).then(\n            function () {\n                toast("Link copied");\n            },\n            function () {\n                toast("Copy failed");\n            }\n        );\n    }\n\n    // ---------- SAVE CONTACT ----------\n    function saveContact() {\n        var lines = [\n            "BEGIN:VCARD",\n            "VERSION:3.0",\n            "N:;" + userName + ";;;",\n            "FN:" + userName,\n            "ORG:" + userName,\n            "TITLE:" + (CFG.tagline || "Your Trusted Travel Partner"),\n            "TEL;TYPE=WORK,VOICE:" + CALL_NUMBER,\n            "URL:" + MAP_URL\n        ];\n\n        if (/^https?:/.test(pageUrl())) {\n            lines.push("URL:" + pageUrl());\n        }\n\n        lines.push("END:VCARD");\n\n        var blob = new Blob(\n            [lines.join("\\r\\n")],\n            { type: "text/vcard;charset=utf-8" }\n        );\n\n        var a = document.createElement("a");\n\n        a.href = URL.createObjectURL(blob);\n        a.download = userName.replace(/\\s+/g, "-") + ".vcf";\n\n        document.body.appendChild(a);\n        a.click();\n        document.body.removeChild(a);\n\n        setTimeout(function () {\n            URL.revokeObjectURL(a.href);\n        }, 1000);\n\n        toast("Contact file downloaded");\n    }\n\n    // ---------- QR CODE ----------\n    function showQr() {\n        var src =\n            "https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=" +\n            encodeURIComponent(pageUrl());\n\n        openModal(\n            "Scan QR code",\n            \'<div class="qmodal__center">\' +\n                \'<img src="\' + src +\n                \'" alt="QR code for this card" width="240" height="240">\' +\n                "<p>Scan to open this digital card on another phone.<\/p>" +\n                \'<a class="qbtn" href="\' + src +\n                \'" download="uravi-holidays-qr.png" target="_blank" rel="noopener">Download QR<\/a>\' +\n            "<\/div>"\n        );\n    }\n\n    var actions = {\n        save: saveContact,\n        share: share,\n        copy: copyLink,\n        qr: showQr\n    };\n\n    tools.addEventListener("click", function (e) {\n        var btn = e.target.closest("[data-action]");\n\n        if (!btn) return;\n\n        var run = actions[btn.getAttribute("data-action")];\n\n        if (run) run();\n    });\n})();\n\n\n// ================= SCROLL EFFECTS =================\n(function () {\n    "use strict";\n\n    var bar = document.getElementById("scrollProgress");\n    var toTop = document.getElementById("toTop");\n    var root = document.documentElement;\n\n    var reduceMotion = window.matchMedia &&\n        window.matchMedia("(prefers-reduced-motion: reduce)").matches;\n\n    var ticking = false;\n\n    // ---------- PROGRESS BAR + BACK TO TOP ----------\n    function update() {\n        var max = root.scrollHeight - root.clientHeight;\n        var top = window.pageYOffset || root.scrollTop || 0;\n\n        if (bar) {\n            bar.style.transform =\n                "scaleX(" + (max > 0 ? Math.min(top / max, 1) : 0) + ")";\n        }\n\n        if (toTop) {\n            toTop.classList.toggle("is-show", top > 480);\n        }\n\n        ticking = false;\n    }\n\n    function onScroll() {\n        if (!ticking) {\n            ticking = true;\n            requestAnimationFrame(update);\n        }\n    }\n\n    window.addEventListener("scroll", onScroll, { passive: true });\n    window.addEventListener("resize", onScroll);\n\n    update();\n\n    if (toTop) {\n        toTop.addEventListener("click", function () {\n            window.scrollTo({\n                top: 0,\n                behavior: reduceMotion ? "auto" : "smooth"\n            });\n        });\n    }\n\n    // ---------- REVEAL SECTIONS ----------\n    var items = document.querySelectorAll(".reveal");\n\n    if ("IntersectionObserver" in window && !reduceMotion) {\n        var io = new IntersectionObserver(function (entries) {\n            entries.forEach(function (entry) {\n                if (entry.isIntersecting) {\n                    entry.target.classList.add("is-in");\n                    io.unobserve(entry.target);\n                }\n            });\n        }, {\n            threshold: 0.1,\n            rootMargin: "0px 0px -6% 0px"\n        });\n\n        items.forEach(function (el) {\n            io.observe(el);\n        });\n    } else {\n        items.forEach(function (el) {\n            el.classList.add("is-in");\n        });\n    }\n\n    // ---------- REDUCED MOTION ----------\n    var art = document.getElementById("heroArt");\n\n    if (reduceMotion && art && art.pauseAnimations) {\n        art.pauseAnimations();\n        art.setCurrentTime(3.5);\n    }\n})();',
+      };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="config.js"></script>
+    <script src="card-config.js"></script>
+    <script>
+      (function () {
+        "use strict";
+        var CS = CardStore,
+          store = CS.store,
+          KEY = CS.KEY,
+          url = CS.url;
+        var DEF = "assets/WhatsApp Image 2026-10-17 at 14.59.35.jpeg";
+        var $ = function (s) {
+          return document.querySelector(s);
+        };
+        var esc = function (v) {
+          return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
+            return {
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            }[c];
+          });
+        };
+
+        var cfg = JSON.parse(JSON.stringify(CS.load(true)));
+        cfg.images = cfg.images || {};
+        cfg.media = cfg.media || [];
+        cfg.theme = cfg.theme || {};
+        cfg.show = cfg.show || {};
+        cfg.links = cfg.links || [];
+        cfg.template = cfg.template || "classic";
+        var TPL = CS.TEMPLATES;
+        cfg.theme = Object.assign({}, TPL.classic.theme, cfg.theme);
+        ["logo", "profile"].forEach(function (k) {
+          cfg.images[k + "Fit"] = Object.assign(
+            { x: 50, y: 50, z: 1 },
+            cfg.images[k + "Fit"],
+          );
+        });
+        cfg.social = cfg.social || {};
+        cfg.stats = cfg.stats || [{}, {}, {}];
+
+        function get(p) {
+          return p.split(".").reduce(function (o, k) {
+            return o && o[k];
+          }, cfg);
+        }
+        function set(p, v) {
+          var a = p.split("."),
+            l = a.pop();
+          a.reduce(function (o, k) {
+            return (o[k] = o[k] || {});
+          }, cfg)[l] = v;
+        }
+
+        var fld = function (k, l, a) {
+          return (
+            "<label>" +
+            l +
+            (a
+              ? '<textarea class="f" data-k="' + k + '"></textarea>'
+              : '<input class="f" data-k="' + k + '">') +
+            "</label>"
+          );
+        };
+        var chk = function (k, l) {
+          return (
+            '<label class="ck"><input type="checkbox" data-k="' +
+            k +
+            '"> ' +
+            l +
+            "</label>"
+          );
+        };
+        var upl = function (k, l) {
+          return (
+            '<div class="up"><img id="pi_' +
+            k +
+            '" alt=""><div><b>' +
+            l +
+            '</b><input type="file" accept="image/*" data-img="' +
+            k +
+            '"><button data-rm="' +
+            k +
+            '">Use original image</button></div></div><div class="cols" style="grid-template-columns:repeat(3,1fr)"><label>Zoom<input type="range" min="1" max="3" step="0.05" data-k="images.' +
+            k +
+            'Fit.z"></label><label>Left / right<input type="range" min="0" max="100" data-k="images.' +
+            k +
+            'Fit.x"></label><label>Up / down<input type="range" min="0" max="100" data-k="images.' +
+            k +
+            'Fit.y"></label></div>'
+          );
+        };
+
+        var sel = function (k, l, o) {
+          return (
+            "<label>" +
+            l +
+            '<select class="f" data-k="' +
+            k +
+            '">' +
+            o
+              .map(function (x) {
+                return '<option value="' + x[0] + '">' + x[1] + "</option>";
+              })
+              .join("") +
+            "</select></label>"
+          );
+        };
+        var ICONS = [
+          "fa-link",
+          "fa-globe",
+          "fa-envelope",
+          "fa-phone",
+          "fa-ticket",
+          "fa-plane",
+          "fa-hotel",
+          "fa-calendar-check",
+          "fa-file-pdf",
+          "fa-camera",
+          "fa-gift",
+          "fa-star",
+        ];
+        var PRESETS = {
+          Ocean: ["#1c5fc0", "#2878df", "#4b9cff", "#ffb020"],
+          Sunset: ["#c2410c", "#ea580c", "#fb923c", "#facc15"],
+          Forest: ["#166534", "#16a34a", "#4ade80", "#f59e0b"],
+          Royal: ["#6d28d9", "#7c3aed", "#a78bfa", "#f472b6"],
+          Rose: ["#be123c", "#e11d48", "#fb7185", "#fbbf24"],
+          Teal: ["#0f766e", "#14b8a6", "#5eead4", "#f97316"],
+          Midnight: ["#0f172a", "#1e3a8a", "#3b82f6", "#22d3ee"],
+        };
+        var FONTS = CS.fonts;
+
+        var SEC = [
+          [
+            "Templates",
+            '<div class="pr" id="tp"></div><p class="hint">A template sets colours, font and layout in one click. Fine-tune everything below afterwards.</p>',
+            1,
+          ],
+          [
+            "Profile",
+            fld("name", "Name") +
+              fld("tagline", "Tagline (under the name)") +
+              fld("badge", "Badge (top-right pill)") +
+              fld("bio", "Short bio", 1),
+            1,
+          ],
+          [
+            "Logo & profile photo",
+            upl("logo", "Logo (top-left)") +
+              upl("profile", "Profile photo (round)") +
+              '<p class="hint">Use the sliders under each photo to centre and zoom it exactly where you want.</p>',
+          ],
+          [
+            "Contact & links",
+            fld("phone", "Call number (with country code, e.g. +91…)") +
+              fld(
+                "whatsapp",
+                "WhatsApp number (country code + number, digits only; leave empty to hide)",
+              ) +
+              fld("waMessage", "WhatsApp pre-filled message", 1) +
+              fld("mapUrl", "Google Maps link (Get Location button)") +
+              fld("googleReview", "Google review link") +
+              fld("googleListing", "Google listing link (fallback)"),
+          ],
+          [
+            "Quick links (buttons)",
+            fld("linksTitle", "Section title") +
+              '<div id="ql"></div><button id="qa">+ Add link</button><p class="hint">Use full links (https://, tel:, mailto:). Rows without label or link are ignored.</p>',
+          ],
+          [
+            "Social media",
+            fld("social.instagram", "Instagram URL") +
+              fld("social.facebook", "Facebook URL") +
+              fld("social.linkedin", "LinkedIn URL") +
+              '<p class="hint">Leave a link empty to hide that icon.</p>',
+          ],
+          [
+            "About & numbers",
+            fld("aboutTitle", "About title") +
+              fld("about", "About text", 1) +
+              [0, 1, 2]
+                .map(function (i) {
+                  return (
+                    '<div class="row">' +
+                    fld("stats." + i + ".value", "Box " + (i + 1) + " value") +
+                    fld("stats." + i + ".label", "Box " + (i + 1) + " label") +
+                    "</div>"
+                  );
+                })
+                .join(""),
+          ],
+          [
+            "Photos & videos (optional)",
+            '<p class="hint">If you add nothing here, no gallery appears on the ID. Photos and videos you add show up in a gallery section.</p>' +
+              fld("galleryTitle", "Gallery title") +
+              '<div id="ml"></div><input type="file" id="mf" accept="image/*,video/*" multiple><div class="row"><input class="f" id="mu" placeholder="…or paste an image / video link"><button id="ma">Add link</button></div><p class="hint">Large videos: host them elsewhere (or keep them small) and paste the link; the ZIP grows with every video.</p>',
+          ],
+          [
+            "Theme & look",
+            '<div class="pr" id="pr"></div><div class="cols"><label>Main<input type="color" data-k="theme.primary"></label><label>Secondary<input type="color" data-k="theme.secondary"></label><label>Light<input type="color" data-k="theme.light"></label><label>Accent<input type="color" data-k="theme.accent"></label></div><label>Card roundness<input type="range" min="8" max="40" data-k="theme.radius"></label><label>Font<select class="f" data-k="theme.font">' +
+              FONTS.map(function (f) {
+                return "<option>" + f + "</option>";
+              }).join("") +
+              "</select></label>" +
+              chk("theme.plane", "Animated flying plane in the header") +
+              sel("theme.align", "Text alignment", [
+                ["center", "Centered"],
+                ["left", "Left"],
+              ]) +
+              sel("theme.photo", "Profile photo shape", [
+                ["circle", "Circle"],
+                ["rounded", "Rounded"],
+                ["square", "Square"],
+              ]) +
+              sel("theme.buttons", "Call button style", [
+                ["filled", "Filled"],
+                ["soft", "Soft"],
+                ["outline", "Outline"],
+              ]) +
+              '<label>Header height<input type="range" min="120" max="300" data-k="theme.heroH"></label>',
+          ],
+          [
+            "Custom CSS (advanced)",
+            fld("customCss", "Your own CSS, applied on top of everything", 1),
+          ],
+          [
+            "Show / hide sections",
+            chk("show.links", "Quick links") +
+              chk("show.social", "Social media") +
+              chk("show.tools", "Save & share") +
+              chk("show.about", "About me") +
+              chk("show.stats", "Number boxes") +
+              chk("show.gallery", "Gallery (only shows if media exists)") +
+              chk("show.feedback", "Feedback section & button"),
+          ],
+          [
+            "Feedback section text",
+            fld("feedbackTitle", "Title") + fld("feedbackSub", "Subtitle"),
+          ],
+        ];
+
+        $("#form").innerHTML = SEC.map(function (s) {
+          return (
+            "<details" +
+            (s[2] ? " open" : "") +
+            "><summary>" +
+            s[0] +
+            '</summary><div class="body">' +
+            s[1] +
+            "</div></details>"
+          );
+        }).join("");
+        $("#pr").innerHTML = Object.keys(PRESETS)
+          .map(function (n) {
+            var c = PRESETS[n];
+            return (
+              '<button data-pre="' +
+              n +
+              '"><i style="background:linear-gradient(90deg,' +
+              c[0] +
+              "," +
+              c[2] +
+              ')"></i>' +
+              n +
+              "</button>"
+            );
+          })
+          .join("");
+
+        function sync() {
+          document.querySelectorAll("[data-k]").forEach(function (e) {
+            var v = get(e.dataset.k);
+            if (e.type === "checkbox") e.checked = v !== false;
+            else
+              e.value = v == null ? (e.type === "color" ? "#000000" : "") : v;
+          });
+        }
+
+        var st = $("#st"),
+          pv = $("#pv"),
+          t1,
+          t2,
+          dirty = false;
+        function save() {
+          st.textContent = "Saving…";
+          clearTimeout(t1);
+          clearTimeout(t2);
+          t1 = setTimeout(function () {
+            cfg.savedAt = Date.now();
+            try {
+              localStorage.setItem(KEY, JSON.stringify(cfg));
+              dirty = true;
+              st.style.color = "#b45309";
+              st.textContent = "Unsaved changes \u2013 press Save";
+            } catch (e) {
+              st.textContent = "Could not save draft";
+              st.style.color = "#b45309";
+            }
+          }, 250);
+          t2 = setTimeout(function () {
+            try {
+              pv.contentWindow.location.reload();
+            } catch (e) {
+              pv.src = "index.html?preview=1&t=" + Date.now();
+            }
+          }, 350);
+        }
+
+        // ---- images / files ----
+        function shrink(f, max) {
+          return new Promise(function (res) {
+            if (!/^image\/(jpeg|png|webp)/.test(f.type)) return res(f);
+            var i = new Image(),
+              u = URL.createObjectURL(f);
+            i.onload = function () {
+              var s = Math.min(1, max / Math.max(i.width, i.height)),
+                c = document.createElement("canvas");
+              c.width = Math.round(i.width * s);
+              c.height = Math.round(i.height * s);
+              c.getContext("2d").drawImage(i, 0, 0, c.width, c.height);
+              URL.revokeObjectURL(u);
+              c.toBlob(
+                function (b) {
+                  res(b || f);
+                },
+                f.type === "image/png" ? "image/png" : "image/jpeg",
+                0.85,
+              );
+            };
+            i.onerror = function () {
+              res(f);
+            };
+            i.src = u;
+          });
+        }
+        function put(f, max) {
+          return (
+            f.type.indexOf("image/") === 0 ? shrink(f, max) : Promise.resolve(f)
+          ).then(function (b) {
+            var id =
+              Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+            return store
+              .put(id, { blob: b, name: f.name, type: b.type || f.type })
+              .then(function () {
+                return "idb:" + id;
+              });
+          });
+        }
+        function drop(ref) {
+          if (ref && ref.indexOf("idb:") === 0) store["del"](ref.slice(4));
+        }
+
+        function prevs() {
+          ["logo", "profile"].forEach(function (k) {
+            url(cfg.images[k]).then(function (u) {
+              $("#pi_" + k).src = u || DEF;
+            });
+          });
+        }
+        function media() {
+          $("#ml").innerHTML =
+            cfg.media
+              .map(function (m, i) {
+                return (
+                  '<div class="mi"><span class="th" data-th="' +
+                  i +
+                  '"></span><div><input class="f" data-c="' +
+                  i +
+                  '" placeholder="Caption (optional)" value="' +
+                  esc(m.caption) +
+                  '"><span class="hint">' +
+                  m.type +
+                  '</span></div><button data-del="' +
+                  i +
+                  '" aria-label="Remove">✕</button></div>'
+                );
+              })
+              .join("") || '<p class="hint">Nothing added yet.</p>';
+          cfg.media.forEach(function (m, i) {
+            url(m.src).then(function (u) {
+              var t = document.querySelector('[data-th="' + i + '"]');
+              if (t && u)
+                t.innerHTML =
+                  m.type === "video"
+                    ? '<video src="' + esc(u) + '" muted></video>'
+                    : '<img src="' + esc(u) + '" alt="">';
+            });
+          });
+        }
+
+        function links() {
+          $("#ql").innerHTML =
+            cfg.links
+              .map(function (l, i) {
+                return (
+                  '<div class="mi"><div><input class="f" data-l="' +
+                  i +
+                  '.label" placeholder="Label, e.g. View packages" value="' +
+                  esc(l.label) +
+                  '"><input class="f" data-l="' +
+                  i +
+                  '.url" placeholder="https://..." value="' +
+                  esc(l.url) +
+                  '"><select class="f" data-l="' +
+                  i +
+                  '.icon">' +
+                  ICONS.map(function (n) {
+                    return (
+                      "<option" +
+                      (n === l.icon ? " selected" : "") +
+                      ">" +
+                      n +
+                      "</option>"
+                    );
+                  }).join("") +
+                  '</select></div><button data-ql="' +
+                  i +
+                  '" aria-label="Remove">✕</button></div>'
+                );
+              })
+              .join("") || '<p class="hint">No links yet.</p>';
+        }
+        function marks() {
+          document.querySelectorAll("[data-tpl]").forEach(function (b) {
+            b.classList.toggle("on", b.dataset.tpl === cfg.template);
+          });
+        }
+
+        var form = $("#form");
+        form.addEventListener("input", function (e) {
+          var t = e.target;
+          if (t.dataset.k) {
+            set(
+              t.dataset.k,
+              t.type === "checkbox"
+                ? t.checked
+                : t.type === "range"
+                  ? Number(t.value)
+                  : t.value,
+            );
+            save();
+          } else if (t.dataset.l) {
+            var p = t.dataset.l.split(".");
+            cfg.links[p[0]][p[1]] = t.value;
+            save();
+          } else if (t.dataset.c) {
+            cfg.media[t.dataset.c].caption = t.value;
+            save();
+          }
+        });
+        form.addEventListener("change", function (e) {
+          var t = e.target;
+          if (t.dataset.img && t.files[0]) {
+            put(t.files[0], 800).then(function (ref) {
+              drop(cfg.images[t.dataset.img]);
+              cfg.images[t.dataset.img] = ref;
+              prevs();
+              save();
+            });
+          } else if (t.id === "mf") {
+            Promise.all(
+              [].map.call(t.files, function (f) {
+                var vid = f.type.indexOf("video/") === 0;
+                if (!vid && f.type.indexOf("image/") !== 0) return null;
+                return put(f, 1400).then(function (ref) {
+                  cfg.media.push({
+                    type: vid ? "video" : "image",
+                    src: ref,
+                    caption: "",
+                  });
+                });
+              }),
+            ).then(function () {
+              t.value = "";
+              media();
+              save();
+            });
+          }
+        });
+        form.addEventListener("click", function (e) {
+          var b = e.target.closest("button");
+          if (!b) return;
+          if (b.dataset.rm) {
+            drop(cfg.images[b.dataset.rm]);
+            cfg.images[b.dataset.rm] = "";
+            prevs();
+            save();
+          } else if (b.dataset.del) {
+            drop(cfg.media[b.dataset.del].src);
+            cfg.media.splice(b.dataset.del, 1);
+            media();
+            save();
+          } else if (b.dataset.pre) {
+            var c = PRESETS[b.dataset.pre];
+            ["primary", "secondary", "light", "accent"].forEach(
+              function (k, i) {
+                cfg.theme[k] = c[i];
+              },
+            );
+            sync();
+            save();
+          } else if (b.dataset.tpl) {
+            cfg.template = b.dataset.tpl;
+            Object.assign(cfg.theme, TPL[b.dataset.tpl].theme);
+            if (TPL[b.dataset.tpl].theme.plane == null) cfg.theme.plane = true;
+            sync();
+            marks();
+            save();
+          } else if (b.id === "qa") {
+            cfg.links.push({ label: "", url: "", icon: "fa-link" });
+            links();
+            save();
+          } else if (b.dataset.ql) {
+            cfg.links.splice(b.dataset.ql, 1);
+            links();
+            save();
+          } else if (b.id === "ma") {
+            var u = $("#mu").value.trim();
+            if (!/^https?:\/\//i.test(u) && u.indexOf("assets/") !== 0)
+              return alert("Paste a full link starting with https://");
+            cfg.media.push({
+              type: /\.(mp4|webm|mov|m4v)(\?|$)/i.test(u) ? "video" : "image",
+              src: u,
+              caption: "",
+            });
+            $("#mu").value = "";
+            media();
+            save();
+          }
+        });
+
+        // ---- export ----
+        function dl(b, n) {
+          var a = document.createElement("a");
+          a.href = URL.createObjectURL(b);
+          a.download = n;
+          a.click();
+          setTimeout(function () {
+            URL.revokeObjectURL(a.href);
+          }, 3000);
+        }
+        var EXT = {
+          "image/jpeg": "jpg",
+          "image/png": "png",
+          "image/gif": "gif",
+          "image/webp": "webp",
+          "video/mp4": "mp4",
+          "video/webm": "webm",
+          "video/quicktime": "mov",
+        };
+
+        async function build() {
+          var out = JSON.parse(JSON.stringify(cfg)),
+            files = [],
+            lost = 0;
+          async function fix(ref) {
+            if (!ref || ref.indexOf("idb:") !== 0) return ref || "";
+            var r = await store.get(ref.slice(4));
+            if (!r) {
+              lost++;
+              return "";
+            }
+            var ext =
+              EXT[r.blob.type] ||
+              (r.name.match(/\.(\w+)$/) || [0, "bin"])[1].toLowerCase();
+            var p = "assets/uploads/" + ref.slice(4) + "." + ext;
+            files.push([p, r.blob]);
+            return p;
+          }
+          out.savedAt = Date.now();
+          out.images.logo = await fix(out.images.logo);
+          out.images.profile = await fix(out.images.profile);
+          for (var m of out.media) m.src = await fix(m.src);
+          out.media = out.media.filter(function (m) {
+            return m.src;
+          });
+          return {
+            lost: lost,
+            files: files,
+            js:
+              "// Generated by the admin page on " +
+              new Date().toLocaleString() +
+              "\nwindow.CARD_PUBLISHED = " +
+              JSON.stringify(out, null, 2) +
+              ";\n",
+          };
+        }
+
+        // ---- Save: download the complete site (admin page not included) ----
+        var SITE = [
+          "index.html",
+          "style.css",
+          "script.js",
+          "card-config.js",
+          "templates.css",
+        ];
+        // Site files are built into this page, so Save needs no folder picking. If the admin is served
+        // from your project folder, the live files are used instead (so your own edits are included).
+        async function grab(n) {
+          try {
+            var r = await fetch(n);
+            if (r.ok) return r.blob();
+          } catch (e) {}
+          if (window.SITE_FILES && window.SITE_FILES[n] != null)
+            return new Blob([window.SITE_FILES[n]], { type: "text/plain" });
+          throw 0;
+        }
+        async function put(dir, path, data) {
+          var parts = path.split("/"),
+            name = parts.pop();
+          for (var p of parts)
+            dir = await dir.getDirectoryHandle(p, { create: true });
+          var w = await (
+            await dir.getFileHandle(name, { create: true })
+          ).createWritable();
+          await w.write(data);
+          await w.close();
+        }
+        async function exists(dir, path) {
+          try {
+            var parts = path.split("/"),
+              name = parts.pop();
+            for (var p of parts) dir = await dir.getDirectoryHandle(p);
+            await dir.getFileHandle(name);
+            return true;
+          } catch (e) {
+            return false;
+          }
+        }
+        $("#chg").onclick = function () {
+          store["del"]("__dir");
+          st.style.color = "#5d6f89";
+          st.textContent = "Next Save will ask for the folder again";
+        };
+        $("#pub").onclick = async function () {
+          var btn = this;
+          btn.disabled = true;
+          st.style.color = "#5d6f89";
+          st.textContent = "Building your site…";
+          try {
+            var dir = null;
+            if (window.showDirectoryPicker) {
+              try {
+                var rec = await store.get("__dir");
+                dir = rec && rec.handle;
+                if (
+                  dir &&
+                  (await dir.requestPermission({ mode: "readwrite" })) !==
+                    "granted"
+                )
+                  dir = null;
+                if (!dir) {
+                  dir = await showDirectoryPicker({ mode: "readwrite" });
+                  await store.put("__dir", { handle: dir });
+                }
+              } catch (e) {
+                if (e && e.name === "AbortError")
+                  throw new Error("cancelled – no folder chosen");
+                dir = null;
+              }
+            }
+            var b = await build(),
+              z = window.JSZip && new JSZip(),
+              miss = [],
+              noimg = false;
+            if (dir) {
+              await put(dir, "config.js", b.js);
+              for (var f of b.files) await put(dir, f[0], f[1]);
+              for (var n of SITE)
+                if (!(await exists(dir, n))) await put(dir, n, await grab(n));
+              dirty = false;
+              st.style.color = "#16734a";
+              st.textContent =
+                "Saved ✓ – written into “" +
+                dir.name +
+                "” (" +
+                b.files.length +
+                " uploaded file(s)). Now commit & push." +
+                (b.lost
+                  ? " Note: " +
+                    b.lost +
+                    " photo(s) missing from this browser – re-upload them."
+                  : "");
+              btn.disabled = false;
+              return;
+            }
+            if (!z)
+              throw new Error("ZIP tool could not load (check your internet).");
+            z.file("config.js", b.js);
+            await Promise.all(
+              SITE.map(async function (n) {
+                try {
+                  z.file(n, await grab(n));
+                } catch (e) {
+                  miss.push(n);
+                }
+              }),
+            );
+            try {
+              z.file(DEF, await grab(DEF));
+            } catch (e) {
+              noimg = true;
+            }
+            if (
+              b.files.some(function (f) {
+                return f[1].size > 95 * 1024 * 1024;
+              })
+            )
+              throw new Error(
+                "a video is over 95 MB and GitHub would reject it. Remove it and paste a video link instead.",
+              );
+            b.files.forEach(function (f) {
+              z.file(f[0], f[1]);
+            });
+            if (miss.length)
+              throw new Error("could not read " + miss.join(", "));
+            dl(await z.generateAsync({ type: "blob" }), "digital-id-site.zip");
+            dirty = false;
+            st.style.color = "#16734a";
+            st.textContent = b.lost
+              ? "Saved, but " +
+                b.lost +
+                " photo(s) are missing from this browser – re-upload them and save again"
+              : "Saved ✓ – digital-id-site.zip downloaded (" +
+                b.files.length +
+                " uploaded file(s) included)";
+            if (b.lost) st.style.color = "#b45309";
+            if (noimg)
+              st.textContent +=
+                " – your existing logo image in assets/ is untouched";
+          } catch (e) {
+            st.style.color = "#b45309";
+            st.textContent = "Save failed: " + e.message;
+          }
+          btn.disabled = false;
+        };
+
+        $("#rst").onclick = function () {
+          if (
+            confirm("Discard this draft and go back to the published version?")
+          ) {
+            localStorage.removeItem(KEY);
+            location.reload();
+          }
+        };
+
+        $("#tp").innerHTML = Object.keys(TPL)
+          .map(function (id) {
+            var c = TPL[id].theme;
+            return (
+              '<button data-tpl="' +
+              id +
+              '"><i style="background:linear-gradient(90deg,' +
+              c.primary +
+              "," +
+              c.light +
+              ')"></i>' +
+              TPL[id].name +
+              "</button>"
+            );
+          })
+          .join("");
+        sync();
+        prevs();
+        media();
+        links();
+        marks();
+        st.textContent = "Ready";
+      })();
+    </script>
+  </body>
+</html>
