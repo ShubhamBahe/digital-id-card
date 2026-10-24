@@ -1,0 +1,94 @@
+/* Templates + layout options. Chosen in the admin page; applied by card-config.js via data-* attributes on <body>. */
+.qlinks{display:grid;gap:10px}
+.qlink{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid var(--line);border-radius:var(--r-field);background:var(--mist);color:var(--navy);font-weight:700;font-size:14px;text-decoration:none;text-align:left;transition:transform .25s var(--ease),box-shadow .25s}
+.qlink i{width:34px;height:34px;flex:none;display:grid;place-items:center;border-radius:10px;font-size:14px;color:#fff;background:linear-gradient(135deg,var(--blue),var(--sky))}
+.qlink:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(40,120,223,.16)}
+
+/* alignment / photo shape / button style */
+[data-align=left] .identity{text-align:left}
+[data-align=left] .profile,[data-align=left] .bio{margin-left:0}
+[data-photo=rounded] .profile,[data-photo=rounded] .profile img{border-radius:26px}
+[data-photo=square] .profile,[data-photo=square] .profile img{border-radius:8px}
+[data-btn=outline] .save-btn{background:transparent;color:var(--blue-deep);border:1.5px solid var(--blue-deep);box-shadow:none}
+[data-btn=soft] .save-btn{background:var(--ice);color:var(--blue-deep);box-shadow:none}
+
+/* minimal */
+body[data-template=minimal]{background:#f5f6f8}
+[data-template=minimal] .card{box-shadow:0 1px 3px rgba(0,0,0,.1)}
+[data-template=minimal] .hero,[data-template=minimal] .feedback-heading{background:var(--blue-deep);border-radius:0}
+[data-template=minimal] .route,[data-template=minimal] .plane{display:none}
+[data-template=minimal] .tile__icon,[data-template=minimal] .info-box{box-shadow:none}
+
+/* night */
+body[data-dark]{--navy:#f1f5ff;--ink:#e6ebf7;--muted:#9fb0cc;--ice:#1c2540;--mist:#161d33;--line:#27324f;background:#0b1020}
+[data-dark] .card,[data-dark] .qmodal__box{background:#12182b;border-color:#27324f}
+[data-dark] .info-box{background:#161d33}
+[data-dark] .location-btn{background:#161d33;border-color:#27324f;color:#a9b8ff}
+[data-dark] .suggestion-chip span{color:#c3cee4}
+[data-dark] .review-copy{color:#b5c1d8}
+[data-dark] .star{color:#34405f}
+[data-dark] .star.active{color:var(--sun)}
+[data-dark] #feedbackForm textarea,[data-dark] #feedbackForm input[type=text]{background:#0f1528;color:#e6ebf7}
+[data-dark] .qtoast{background:#27324f}
+
+/* aurora (glass) */
+body[data-template=aurora]{background:linear-gradient(135deg,var(--blue-deep),var(--blue) 45%,var(--sky))}
+[data-template=aurora] .card{background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-color:rgba(255,255,255,.6)}
+
+/* poster (bold) */
+body[data-template=poster]{background:var(--sun)}
+[data-template=poster] .card{border:3px solid var(--navy);box-shadow:8px 8px 0 var(--navy)}
+[data-template=poster] .hero,[data-template=poster] .feedback-heading{background:var(--blue-deep);border-radius:0;border-bottom:3px solid var(--navy)}
+[data-template=poster] h1,[data-template=poster] .block__title{text-transform:uppercase}
+[data-template=poster] .tile__icon,[data-template=poster] .action-btn,[data-template=poster] .info-box,[data-template=poster] .about-me,[data-template=poster] .qlink{border:2px solid var(--navy);box-shadow:3px 3px 0 var(--navy)}
+
+/* business */
+[data-template=business] .hero{border-radius:0 0 24px 24px}
+[data-template=business] .tile__icon{border-radius:50%}
+
+/* ===== ticket: boarding pass, photo beside the name, perforated divider ===== */
+body[data-template=ticket]{background:#e9eef7}
+[data-template=ticket] .card{border:2px solid var(--navy)}
+[data-template=ticket] .hero,[data-template=ticket] .feedback-heading{background:var(--blue-deep);border-radius:0;border-bottom:3px dashed rgba(255,255,255,.55)}
+[data-template=ticket] .identity{display:grid;grid-template-columns:84px 1fr;column-gap:16px;align-items:center;text-align:left;margin-top:0;padding-top:20px}
+[data-template=ticket] .hero,[data-template=editorial] .hero{padding-bottom:24px}
+[data-template=ticket] .profile{grid-row:1/span 2;width:84px;height:84px;margin:0}
+[data-template=ticket] h1{font-size:22px;align-self:end}
+[data-template=ticket] .role{margin-top:2px;align-self:start}
+[data-template=ticket] .bio,[data-template=ticket] .action-buttons{grid-column:1/-1;max-width:none;margin-left:0}
+[data-template=ticket] .line{position:relative;margin:26px 0 0;border-top:3px dotted var(--sky)}
+[data-template=ticket] .line::before,[data-template=ticket] .line::after{content:"";position:absolute;top:-14px;width:26px;height:26px;border-radius:50%;background:#e9eef7;border:2px solid var(--navy)}
+[data-template=ticket] .line::before{left:-15px}
+[data-template=ticket] .line::after{right:-15px}
+[data-template=ticket] .tile__icon{border-radius:50%;border:2px dashed var(--navy);box-shadow:none}
+[data-template=ticket] .block__title{font-size:13px;letter-spacing:.16em;text-transform:uppercase}
+[data-template=ticket] .info-box{border-style:dashed}
+
+/* ===== sunset: tall wave header, big photo, pill buttons, pill tiles ===== */
+body[data-template=sunset]{background:linear-gradient(180deg,color-mix(in srgb,var(--sun) 28%,#fff),color-mix(in srgb,var(--blue) 14%,#fff))}
+[data-template=sunset] .hero,[data-template=sunset] .feedback-heading{border-radius:0 0 50%/0 0 90px 90px}
+[data-template=sunset] .identity{margin-top:-64px}
+[data-template=sunset] .profile{width:120px;height:120px}
+[data-template=sunset] .action-buttons{grid-template-columns:1fr}
+[data-template=sunset] .action-btn{border-radius:999px}
+[data-template=sunset] .tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+[data-template=sunset] .tile{flex-direction:row;justify-content:flex-start;gap:10px;padding:8px 14px 8px 8px;background:var(--mist);border-radius:999px}
+[data-template=sunset] .tile__icon{width:42px;height:42px;font-size:18px;border-radius:50%}
+
+/* ===== editorial: magazine, name beside photo, list-style rows ===== */
+body[data-template=editorial]{background:#f3ecdf}
+[data-template=editorial] .card{background:#fffdf8;border:1px solid var(--navy);box-shadow:none}
+[data-template=editorial] .hero,[data-template=editorial] .feedback-heading{background:var(--blue-deep);border-radius:0}
+[data-template=editorial] .identity{display:grid;grid-template-columns:minmax(0,1fr) 100px;column-gap:16px;text-align:left;margin-top:0;padding-top:20px}
+[data-template=editorial] .profile{grid-column:2;grid-row:1/span 2;width:100px;height:100px;margin:0}
+[data-template=editorial] h1{grid-column:1;grid-row:1;align-self:end;font-size:30px;line-height:1.1;overflow-wrap:break-word}
+[data-template=editorial] .role{grid-column:1;grid-row:2;align-self:start;font-style:italic}
+[data-template=editorial] .bio,[data-template=editorial] .action-buttons{grid-column:1/-1;max-width:none;margin-left:0}
+[data-template=editorial] .bio{border-top:1px solid var(--navy);padding-top:14px}
+[data-template=editorial] .action-buttons{grid-template-columns:1fr;gap:0}
+[data-template=editorial] .action-btn{justify-content:flex-start;gap:12px;padding:14px 4px;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;color:var(--navy);box-shadow:none}
+[data-template=editorial] .tiles{grid-template-columns:1fr;gap:0}
+[data-template=editorial] .tile{flex-direction:row;justify-content:flex-start;gap:14px;padding:12px 4px;border-radius:0;border-bottom:1px solid var(--line)}
+[data-template=editorial] .tile__icon{width:36px;height:36px;font-size:16px;border-radius:50%}
+[data-template=editorial] .info-box,[data-template=editorial] .about-me{border-radius:0;background:transparent}
+[data-template=editorial] .block__title{font-size:20px}

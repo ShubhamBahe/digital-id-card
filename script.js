@@ -1,7 +1,16 @@
 console.log("Uravi Holidays script loaded");
 
 // ================= PROFILE DETAILS =================
+<<<<<<< HEAD
 const userName = "Uravi Holidays";
+=======
+<<<<<<< HEAD
+const CFG = window.CARD || {};
+const userName = CFG.name || "Uravi Holidays";
+=======
+const userName = "Uravi Holidays";
+>>>>>>> c381f0c4ee446a0ea920991acc2a711223009e88
+>>>>>>> d04826022de1389c2f1811079549e2c672988750
 
 const nameParts = userName.trim().split(/\s+/).filter(Boolean);
 
@@ -17,8 +26,18 @@ if (profileName) {
 
 
 // ================= GOOGLE MAPS LOCATION =================
+<<<<<<< HEAD
 const MAP_URL = "https://maps.app.goo.gl/xikMJF9QvYEE35hi8";
 const CALL_NUMBER = "+918766043591";
+=======
+<<<<<<< HEAD
+const MAP_URL = CFG.mapUrl || "https://maps.app.goo.gl/xikMJF9QvYEE35hi8";
+const CALL_NUMBER = CFG.phone || "+918766043591";
+=======
+const MAP_URL = "https://maps.app.goo.gl/xikMJF9QvYEE35hi8";
+const CALL_NUMBER = "+918766043591";
+>>>>>>> c381f0c4ee446a0ea920991acc2a711223009e88
+>>>>>>> d04826022de1389c2f1811079549e2c672988750
 
 function getLocation() {
     window.open(MAP_URL, "_blank", "noopener,noreferrer");
@@ -26,10 +45,23 @@ function getLocation() {
 
 
 // ================= WHATSAPP CONTACT =================
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+const whatsappNumber = String(CFG.whatsapp ?? "98329056457").replace(/\D/g, "");
+
+const whatsappMessage =
+    CFG.waMessage || "Hello! 👋 I'm interested in your travel packages. Please share the available holiday packages and pricing. ✈️🌍";
+=======
+>>>>>>> d04826022de1389c2f1811079549e2c672988750
 const whatsappNumber = "98329056457";
 
 const whatsappMessage =
     "Hello! 👋 I'm interested in your travel packages. Please share the available holiday packages and pricing. ✈️🌍";
+<<<<<<< HEAD
+=======
+>>>>>>> c381f0c4ee446a0ea920991acc2a711223009e88
+>>>>>>> d04826022de1389c2f1811079549e2c672988750
 
 const whatsappLink = document.getElementById("whatsappLink");
 
@@ -67,12 +99,28 @@ if (whatsappLink) {
     // It normally looks like:  https://g.page/r/XXXXXXXXXXXX/review
     // If this is empty or not a valid review link, the site opens your
     // Google Maps listing instead, and the customer must tap "Write a review".
+<<<<<<< HEAD
     const GOOGLE_REVIEW_URL = "https://g.page/r/CXPe05M9jvHUEAE/review";
+=======
+<<<<<<< HEAD
+    const GOOGLE_REVIEW_URL = CFG.googleReview || "https://g.page/r/CXPe05M9jvHUEAE/review";
+=======
+    const GOOGLE_REVIEW_URL = "https://g.page/r/CXPe05M9jvHUEAE/review";
+>>>>>>> c381f0c4ee446a0ea920991acc2a711223009e88
+>>>>>>> d04826022de1389c2f1811079549e2c672988750
 
     // Fallback only: your ordinary Google Maps listing page.
     // This does NOT open the review form by itself.
     const GOOGLE_LISTING_URL =
+<<<<<<< HEAD
         "https://www.google.com/maps/place/URAVI+HoLidays/@21.1427793,79.0859763,17z/data=!4m8!3m7!1s0x3bd4c10d0963e1ff:0xd4f18e3d93d3de73!8m2!3d21.1427793!4d79.0859763!9m1!1b1!16s%2Fg%2F11p20x75bp";
+=======
+<<<<<<< HEAD
+        CFG.googleListing || "https://www.google.com/maps/place/URAVI+HoLidays/@21.1427793,79.0859763,17z/data=!4m8!3m7!1s0x3bd4c10d0963e1ff:0xd4f18e3d93d3de73!8m2!3d21.1427793!4d79.0859763!9m1!1b1!16s%2Fg%2F11p20x75bp";
+=======
+        "https://www.google.com/maps/place/URAVI+HoLidays/@21.1427793,79.0859763,17z/data=!4m8!3m7!1s0x3bd4c10d0963e1ff:0xd4f18e3d93d3de73!8m2!3d21.1427793!4d79.0859763!9m1!1b1!16s%2Fg%2F11p20x75bp";
+>>>>>>> c381f0c4ee446a0ea920991acc2a711223009e88
+>>>>>>> d04826022de1389c2f1811079549e2c672988750
 
     // Only these hosts are accepted, so a typo can never send customers elsewhere.
     const ALLOWED_GOOGLE_HOSTS = [
@@ -150,11 +198,25 @@ if (whatsappLink) {
 
         if (selectedRating) {
             parts.push(
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+                `My experience with ${userName} was ${ratingWords[selectedRating]}`
+            );
+        } else if (positives.length) {
+            parts.push(
+                `My experience with ${userName} was enjoyable`
+=======
+>>>>>>> d04826022de1389c2f1811079549e2c672988750
                 `My experience with Uravi Holidays was ${ratingWords[selectedRating]}`
             );
         } else if (positives.length) {
             parts.push(
                 "My experience with Uravi Holidays was enjoyable"
+<<<<<<< HEAD
+=======
+>>>>>>> c381f0c4ee446a0ea920991acc2a711223009e88
+>>>>>>> d04826022de1389c2f1811079549e2c672988750
             );
         }
 
@@ -764,7 +826,15 @@ if (whatsappLink) {
             "N:;" + userName + ";;;",
             "FN:" + userName,
             "ORG:" + userName,
+<<<<<<< HEAD
             "TITLE:Your Trusted Travel Partner",
+=======
+<<<<<<< HEAD
+            "TITLE:" + (CFG.tagline || "Your Trusted Travel Partner"),
+=======
+            "TITLE:Your Trusted Travel Partner",
+>>>>>>> c381f0c4ee446a0ea920991acc2a711223009e88
+>>>>>>> d04826022de1389c2f1811079549e2c672988750
             "TEL;TYPE=WORK,VOICE:" + CALL_NUMBER,
             "URL:" + MAP_URL
         ];
@@ -783,7 +853,15 @@ if (whatsappLink) {
         var a = document.createElement("a");
 
         a.href = URL.createObjectURL(blob);
+<<<<<<< HEAD
         a.download = "Uravi-Holidays.vcf";
+=======
+<<<<<<< HEAD
+        a.download = userName.replace(/\s+/g, "-") + ".vcf";
+=======
+        a.download = "Uravi-Holidays.vcf";
+>>>>>>> c381f0c4ee446a0ea920991acc2a711223009e88
+>>>>>>> d04826022de1389c2f1811079549e2c672988750
 
         document.body.appendChild(a);
         a.click();
@@ -916,4 +994,12 @@ if (whatsappLink) {
         art.pauseAnimations();
         art.setCurrentTime(3.5);
     }
+<<<<<<< HEAD
 })();
+=======
+<<<<<<< HEAD
+})();
+=======
+})();
+>>>>>>> c381f0c4ee446a0ea920991acc2a711223009e88
+>>>>>>> d04826022de1389c2f1811079549e2c672988750
